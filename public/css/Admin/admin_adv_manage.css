@@ -1,0 +1,79 @@
+.content{
+	background: #F6F7F8;
+	padding-top: 60px;
+}
+
+.content .title{
+	margin: 0px 20px 10px 40px;
+	display: grid;
+	grid-template-columns: 9fr 1fr;
+}
+
+.content .title div{
+	font-size: 26px;
+	font-weight: 400;
+}
+
+.content .title a{
+	display: inline-block;
+	height: 30px;
+	line-height: 30px;
+	width: 100%;
+	color: #fff;
+	background: #1D71AB;
+	border-radius: 4px;
+	text-align: center;
+	text-decoration: none;
+}
+
+
+.content .table-adv-wrap{
+	height: auto;
+	margin: 10px 20px 10px 40px;
+	box-shadow: 7px 5px 6px -4px #E3E3E3;
+	background: #fff;
+	text-align: left;
+}
+
+.content .table-adv-wrap table{
+	height: auto;
+	border-collapse: collapse;
+}
+
+.content .table-adv-wrap table th{
+	height: 60px;
+	line-height: 60px;
+	border-bottom: 1px solid #F6F7F8;
+	padding-left: 10px;
+	font-weight: 600;
+}
+
+.content .table-adv-wrap table td{
+	height: 40px;
+	border-bottom: 1px solid #F6F7F8;
+	padding-left: 10px;
+}
+
+.content .table-adv-wrap table a{
+	display: inline-block;
+	height: 30px;
+	line-height: 30px;
+	width: 40px;
+	color: #fff;
+	background: #1D71AB;
+	border-radius: 4px;
+	text-align: center;
+	text-decoration: none;
+}
+
+.content .table-adv-wrap table .btnEdit{
+	display: inline-block;
+	height: 30px;
+	line-height: 30px;
+	width: 50px;
+	color: #fff;
+	background: #FE302E;
+	border-radius: 4px;
+	text-align: center;
+	text-decoration: none;
+}

@@ -1,0 +1,180 @@
+*{
+	margin: 0;
+	padding: 0;
+}
+
+body{
+	display: grid;
+	grid-template-columns: 1fr 4fr;
+	height: auto;
+}
+
+.content{
+	background: #F6F7F8;
+	padding-top: 60px;
+}
+
+.content .title{
+	margin-left: 40px;
+	font-size: 26px;
+	font-weight: 400;
+}
+
+.noti-wrapper{
+	margin: 40px;
+	height: auto;
+}
+
+.noti-wrapper .errors{
+	background: #FF9494;
+	height: auto;
+	padding: 20px 10px 20px 40px;
+	margin: 40px 0;
+}
+
+.noti-wrapper .notifications{
+	background: #8DC38F;
+	height: auto;
+	padding: 20px 10px 20px 40px;
+}
+
+.content .add-book-form{
+	margin: 20px 20px 0 40px;
+	background: #FFFFFF;
+	padding: 40px 0px;
+	display: block;
+	box-shadow: 7px 5px 6px -4px #E3E3E3;
+	height: auto;
+	min-height: 100vh;
+}
+.content .add-book-form .add-form .sel__box__options{
+	display: list-item;
+	font-family: 'Quicksand';
+	font-size: 1.5em;
+	color: #838e95;
+	padding: 0.5em 1em;
+	user-select: none;
+}
+
+.content .add-book-form .add-form .input-wrapper{
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+}
+
+.content .add-book-form .add-form .data-input{
+	margin: 0 20px 20px 20px;
+	display: grid;
+	grid-template-rows: : 1fr 1fr;
+}
+.content .add-book-form .add-form .data-input .name{
+	text-align: left;
+	line-height: 40px;
+	font-weight: 550;
+}
+
+.content .add-book-form .add-form .data-input .input{
+	padding: 10px 14px;
+	font-size: 14px;
+	border: 1px solid #E5E5E5;	
+	box-shadow: 7px 5px 6px -6px #E3E3E3;
+	outline: none;
+}
+
+.content .add-book-form .add-form .data-input .input:focus{
+	padding: 10px 14px;
+	font-size: 14px;
+	border: 1px solid #7F15E9;	
+	box-shadow: 7px 5px 6px -6px #E3E3E3;
+	outline: none;
+}
+
+.content .add-book-form .add-form .input-many-wrapper{
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+}
+
+.content .add-book-form .add-form .data-input-many{
+	margin: 0 20px;
+	display: grid;
+	grid-template-rows: : 1fr 1fr;
+}
+
+.content .add-book-form .add-form .data-input-many .name{
+	display: grid;
+	grid-template-columns: 3fr 1fr;
+	text-align: left;
+
+}
+
+.content .add-book-form .add-form .data-input-many .name label{
+	text-align: left;
+	line-height: 40px;
+	font-weight: 550;
+}
+
+.content .add-book-form .add-form .data-input-many .btn-wrap{
+	overflow: hidden;
+}
+
+.content .add-book-form .add-form .data-input-many .btn-data{
+	border: none;
+	color: #000;
+	background: none;
+	cursor: pointer;
+	height: 40px;
+	width: 40px;
+	float: right;
+	margin-left: 10px;
+}
+
+
+.content .add-book-form .add-form .data-input-many .control{
+}
+
+.content .add-book-form .add-form .data-input-many .input{
+	padding: 10px 0;
+	width: 100%;
+	font-size: 14px;
+	border: 1px solid #E5E5E5;	
+	box-shadow: 7px 5px 6px -6px #E3E3E3;
+	margin-bottom: 20px;
+	outline: none;
+	padding-left: 10px;
+}
+
+.content .add-book-form .add-form .data-input-many .input:focus{
+	padding: 10px 0;
+	width: 100%;
+	font-size: 14px;
+	border: 1px solid #7F15E9;	
+	box-shadow: 7px 5px 6px -6px #E3E3E3;
+	margin-bottom: 20px;
+	outline: none;
+	padding-left: 10px;
+}
+
+.content .add-book-form .add-form .picture-wrap{
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr 1fr;
+	margin: 0 20px 20px 20px;
+	height: 220px;
+	overflow: auto;
+}
+
+.content .add-book-form .add-form .picture-wrap .img-ele{
+	width: 200px;
+	height: 200px;
+	margin-bottom: 10px;
+}
+
+.content .add-book-form .add-form .btn-save{
+	height: 40px;
+	width: 80px;
+	border: none;
+	box-shadow: 7px 5px 6px -4px #E3E3E3;
+	font-weight: 500;
+	color: #FFFFFF;
+	background: #7F15E9;
+	font-weight: 600;	
+	margin-left: 20px;
+}

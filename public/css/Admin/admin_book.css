@@ -1,0 +1,110 @@
+.content{
+	background: #F6F7F8;
+	padding-top: 60px;
+}
+
+.content .title{
+	margin-left: 40px;
+	font-size: 26px;
+	font-weight: 400;
+}
+
+.content .tool-bar{
+	padding: 15px 20px 0px 0px;
+}
+
+.content .tool-bar .search-form{
+	display: inline-block;
+	margin-left: 40px;
+}
+
+.content .tool-bar .search-form input{
+	font-size: 14px;
+	padding: 10px;
+	border: 1px solid #E5E5E5;	
+	width: 315px;
+	box-shadow: 7px 5px 6px -4px #E3E3E3;
+}
+
+.content .tool-bar .search-form input:focus{
+	font-size: 14px;
+	padding: 10px;
+	border: 1px solid #7F15E9;	
+	width: 315px;
+	box-shadow: 7px 5px 6px -4px #E3E3E3;
+	outline: none;
+}
+
+.content .tool-bar .search-form .search-btn{
+	height: 37px;
+	border: none;
+	box-shadow: 7px 5px 6px -4px #E3E3E3;
+	margin-left: 4px;
+	padding: 0 26px;
+	text-align: center;
+	font-weight: 500;
+	color: #FFFFFF;
+	background: #1D71AB;
+	cursor: pointer;
+}
+
+.content .tool-bar .add-btn{
+	height: 37px;
+	line-height: 37px;
+	border: none;
+	box-shadow: 7px 5px 6px -4px #E3E3E3;
+	margin-left: 4px;
+	padding: 0 26px;
+	text-align: center;
+	font-weight: 500;
+	color: #FFFFFF;
+	background: #1D71AB;
+	cursor: pointer;
+	float: right;
+}
+
+.content .tool-bar .add-btn::after{
+	content: "";
+	clear: right;
+	display: block;
+}
+
+.content .book-table{
+	background: #FFFFFF;
+	margin: 20px 20px 0 40px;
+	padding-left: 30px;
+	height: auto;
+	min-height: 80vh;
+	box-shadow: 7px 5px 6px -4px #E3E3E3;
+}
+
+.content .book-table .book-list{
+	border-collapse: collapse;
+}
+
+.content .book-table .book-list th{
+	width: 200px;
+	text-align: left;
+	font-size: 16px;
+	padding: 20px 10px 20px 0;
+	border-bottom: 1px solid #E3E3E3;
+	border-right: none;
+	border-left: none;
+}
+
+.content .book-table .book-list td{
+	padding: 16px 10px 16px 0;
+	border-bottom: 1px solid #E3E3E3;
+	border-right: none;
+	border-left: none;
+	width: 200px;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	max-width: 200px;
+}
+
+.content .book-table .book-list td a{
+	color: #1D71AB;
+}
+

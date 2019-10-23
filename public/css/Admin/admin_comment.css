@@ -1,0 +1,113 @@
+.content{
+	background: #F6F7F8;
+	padding-top: 60px;
+}
+
+.content .title{
+	margin-left: 40px;
+	font-size: 26px;
+	font-weight: 400;
+}
+
+.content .comment-list{
+	height: auto;
+	margin: 10px 20px 10px 40px;
+	box-shadow: 7px 5px 6px -4px #E3E3E3;
+}
+.content .comment-list .comment-row{
+	background: #fff;
+	padding: 30px 20px;
+	border-bottom: 1px solid #F6F7F8;
+	margin-bottom: 20px;
+}
+
+.content .comment-list .comment-row .comment-control{
+	margin-top: 20px;
+}
+
+.content .comment-list .comment-row .comment-control .btnAccept{
+	height: 40px;
+	line-height: 40px;
+	width: 140px;
+	background: #FDD22F;
+	border-radius: 4px;
+	display: inline-block;
+	text-decoration: none;
+	color: #333;
+	text-align: center;
+	margin-right: 20px;
+}
+
+.content .comment-list .comment-row .comment-control .btnDelete{
+	height: 40px;
+	line-height: 40px;
+	width: 140px;
+	background: #FF3945;
+	border-radius: 4px;
+	display: inline-block;
+	text-decoration: none;
+	color: #fff;
+	text-align: center;
+}
+
+.content .comment-list .comment-item{
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+}
+.content .comment-list .comment-item .book-div{
+	display: grid;
+	grid-template-columns: 1fr 4fr;
+}
+.content .comment-list .comment-item .book-div img{
+	display: inline-block;
+	width: 140px;
+	height: 140px;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+.content .comment-list .comment-item .book-div .book-info{
+	display: inline-block;
+	width: 90%;
+}
+.content .comment-list .comment-item .book-div .book-info .book-name{
+	font-size: 17px;
+	font-weight: 600;
+	color: #1D71AB;
+	margin-bottom: 10px;
+}
+
+.content .comment-list .comment-item .book-div .book-info .author-name{
+	color: #189EFF;
+}
+
+.content .comment-list .comment-item .comment-div .user{
+	margin-bottom: 10px;
+	font-weight: 600;
+	font-size: 16px;
+}
+
+.content .comment-list .comment-item .comment-div .rating{
+	margin-bottom: 10px;
+	font-weight: 600;
+	font-size: 20px;
+	color: red;
+}
+
+.content .comment-list .comment-item .comment-div .comment-title{
+	margin-bottom: 10px;
+	font-weight: 600;
+	font-size: 15px;
+	color: #444;
+}
+
+.content .comment-list .comment-item .comment-div .comment-content{
+	margin-bottom: 10px;
+	font-weight: 500;
+	font-size: 13px;
+	color: #555;
+}
+
+.content .comment-list .comment-item .comment-div .date{
+	font-size: 13px;
+	color: #777;
+}
