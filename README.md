@@ -1,4 +1,4 @@
-#Course Project: Online Bookstore
+# Course Project: Online Bookstore
 
 ## Introduction
 This is our final practice exercises designed by object-oriented software development method for the OOAD course which taught at UIT.
