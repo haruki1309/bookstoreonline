@@ -25,7 +25,7 @@ Route::group(['prefix'=>'admin'], function(){
 
 	Route::get('book-search', 'Admin\BookController@getSearch');
 
-	Route::get('books', 'Admin\BookController@getIndex');
+	Route::get('warehouse', 'Admin\BookController@getIndex');
 
 	Route::get('books/new', 'Admin\BookController@getAddBook');
 
@@ -36,36 +36,16 @@ Route::group(['prefix'=>'admin'], function(){
 	Route::post('books/edit/{id}', 'Admin\BookController@postEditBook');
 
 	//author route ------------------------------------------------------
-
-	Route::post('books/author-search', 'Admin\AuthorController@search');
-
-	Route::get('books/author-search', 'Admin\AuthorController@getSearch');
-
-	Route::get('books/author/{id}', 'Admin\AuthorController@getEdit');
-
-	Route::post('books/author/{id}', 'Admin\AuthorController@postEdit');
-
-	Route::get('books/author/del/{id}', 'Admin\AuthorController@delete');
-
-	Route::get('books/author', 'Admin\AuthorController@getIndex');
-
-	Route::post('books/author', 'Admin\AuthorController@postIndex');
+	Route::get('author', 'Admin\AuthorController@index');
+	Route::post('author/store', 'Admin\AuthorController@store');
+	Route::get('author/{id}/edit', 'Admin\AuthorController@edit');
+	Route::get('author/{id}/delete', 'Admin\AuthorController@delete');
 
 	//translator route ------------------------------------------------------
-
-	Route::post('books/translator-search', 'Admin\TranslatorController@search');
-
-	Route::get('books/translator-search', 'Admin\TranslatorController@getSearch');
-
-	Route::get('books/translator/{id}', 'Admin\TranslatorController@getEdit');
-
-	Route::post('books/translator/{id}', 'Admin\TranslatorController@postEdit');
-
-	Route::get('books/translator/del/{id}', 'Admin\TranslatorController@delete');
-
-	Route::get('books/translator', 'Admin\TranslatorController@getIndex');
-
-	Route::post('books/translator', 'Admin\TranslatorController@postIndex');
+	Route::get('translator', 'Admin\TranslatorController@index');
+	Route::post('translator/store', 'Admin\TranslatorController@store');
+	Route::get('translator/{id}/edit', 'Admin\TranslatorController@edit');
+	Route::get('translator/{id}/delete', 'Admin\TranslatorController@delete');
 
 	//nph route ------------------------------------------------------
 
@@ -101,69 +81,29 @@ Route::group(['prefix'=>'admin'], function(){
 
 
 	//language route ------------------------------------------------------
-
-	Route::post('books/language-search', 'Admin\LanguageController@search');
-
-	Route::get('books/language-search', 'Admin\LanguageController@getSearch');
-
-	Route::get('books/language/{id}', 'Admin\LanguageController@getEdit');
-
-	Route::post('books/language/{id}', 'Admin\LanguageController@postEdit');
-
-	Route::get('books/language/del/{id}', 'Admin\LanguageController@delete');
-
-	Route::get('books/language', 'Admin\LanguageController@getIndex');
-
-	Route::post('books/language', 'Admin\LanguageController@postIndex');
+	Route::get('language', 'Admin\LanguageController@index');
+	Route::post('language/store', 'Admin\LanguageController@store');
+	Route::get('language/{id}/edit', 'Admin\LanguageController@edit');
+	Route::get('language/{id}/delete', 'Admin\LanguageController@delete');
 
 	//age route ------------------------------------------------------
-
-	Route::post('books/age-search', 'Admin\AgeController@search');
-
-	Route::get('books/age-search', 'Admin\AgeController@getSearch');
-
-	Route::get('books/age/{id}', 'Admin\AgeController@getEdit');
-
-	Route::post('books/age/{id}', 'Admin\AgeController@postEdit');
-
-	Route::get('books/age/del/{id}', 'Admin\AgeController@delete');
-
-	Route::get('books/age', 'Admin\AgeController@getIndex');
-
-	Route::post('books/age', 'Admin\AgeController@postIndex');
+	Route::get('age', 'Admin\AgeController@index');
+	Route::post('age/store', 'Admin\AgeController@store');
+	Route::get('age/{id}/edit', 'Admin\AgeController@edit');
+	Route::get('age/{id}/delete', 'Admin\AgeController@delete');
 
 	//topic route ------------------------------------------------------
-
-	Route::post('books/topic-search', 'Admin\TopicController@search');
-
-	Route::get('books/topic-search', 'Admin\TopicController@getSearch');
-
-	Route::get('books/topic/{id}', 'Admin\TopicController@getEdit');
-
-	Route::post('books/topic/{id}', 'Admin\TopicController@postEdit');
-
-	Route::get('books/topic/del/{id}', 'Admin\TopicController@delete');
-
-	Route::get('books/topic', 'Admin\TopicController@getIndex');
-
-	Route::post('books/topic', 'Admin\TopicController@postIndex');
+	Route::get('topic', 'Admin\TopicController@index');
+	Route::post('topic/store', 'Admin\TopicController@store');
+	Route::get('topic/{id}/edit', 'Admin\TopicController@edit');
+	Route::get('topic/{id}/delete', 'Admin\TopicController@delete');
 
 	//category route ------------------------------------------------------
-
-	Route::post('books/category-search', 'Admin\CategoryController@search');
-
-	Route::get('books/category-search', 'Admin\CategoryController@getSearch');
-
-	Route::get('books/category/{id}', 'Admin\CategoryController@getEdit');
-
-	Route::post('books/category/{id}', 'Admin\CategoryController@postEdit');
-
-	Route::get('books/category/del/{id}', 'Admin\CategoryController@delete');
-
-	Route::get('books/category', 'Admin\CategoryController@getIndex');
-
-	Route::post('books/category', 'Admin\CategoryController@postIndex');
-
+	Route::get('category', 'Admin\CategoryController@index');
+	Route::post('category/store', 'Admin\CategoryController@store');
+	Route::get('category/{id}/edit', 'Admin\CategoryController@edit');
+	Route::get('category/{id}/delete', 'Admin\CategoryController@delete');
+	
 	//user route
 	Route::get('users', 'Admin\UsersController@getUser');
 	//order route
@@ -196,4 +136,14 @@ Route::group(['prefix'=>'admin'], function(){
 
 	//dashboard route
 	Route::get('dashboard', 'Admin\DashboardController@getIndex');
+
+	//supplier route
+	Route::get('supplier', 'Admin\SupplierController@index');
+	Route::get('supplier/{id}', 'Admin\SupplierController@edit');
+
+	//goods receipt order
+	Route::get('goods-receipt-order', 'Admin\GoodsReceiptOrderController@index');
+	Route::get('goods-receipt-order/create', 'Admin\GoodsReceiptOrderController@create');
+	Route::post('goods-receipt-order/create/map-table', 'Admin\GoodsReceiptOrderController@mapTable');
+	Route::post('goods-receipt-order/create/add-list', 'Admin\GoodsReceiptOrderController@addList');
 });

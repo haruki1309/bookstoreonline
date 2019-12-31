@@ -4,65 +4,49 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-
-use App\Category;
+use Redirect,Response;
+use App\Models\Category;
+use App\Models\Book;
 
 class CategoryController extends Controller
 {
-    public function getIndex(){
-    	$allCategory = Category::all();
-    	return view('admin\book\book_category_list', compact('allCategory'));
+    public function index(){
+        $viewName = "thể loại";
+        if(request()->ajax()) {
+            $categories = Category::select('*');
+
+            return datatables()->of($categories)
+            ->addColumn('action', function($categories){
+                $id = $categories->id;
+                return (string)view('admin/bookinfo/action', compact('id'));
+            })
+            ->rawColumns(['action'])
+            ->addIndexColumn()
+            ->make(true);
+        }
+        return view('admin\bookinfo\bookinfo', compact('viewName'));
+    }
+      
+    public function edit($id)
+    {   
+        $where = array('id' => $id);
+        $Category  = Category::where($where)->first();
+        return Response::json($Category);
     }
 
-    public function postIndex(Request $request){
-        $this->validate($request, [
-            'value'=>'required|unique:category,name'
-        ], [
-            'value.required'=>'Bạn chưa nhập thể loại',
-            'value.unique'=>'Thể loại đã tồn tại'
-        ]);
-
-    	$category = new Category;
-    	$category->name = $request->value;
-    	$category->save();
-    	return redirect('admin/books/category')->with('message', 'Thêm thể loại thành công');
-    }
-
-    public function getEdit($id){
-    	$allCategory = Category::all();
-    	$edit_category = Category::where('id', $id)->first();
-    	return view('admin\book\book_category_edit', compact('edit_category', 'allCategory'));
-    }
-
-    public function postEdit(Request $request, $id){
-        $this->validate($request, [
-            'value'=>'required|unique:category,name'
-        ], [
-            'value.required'=>'Bạn chưa nhập thể loại',
-            'value.unique'=>'Thể loại đã tồn tại'
-        ]);
-
-    	$category = Category::find($id);
-    	$category->name = $request->value;
-    	$category->save();
-    	return redirect('admin/books/category');
+    public function store(Request $request)
+    {  
+        $data = Category::updateOrCreate(['id'=>$request->id], ['name'=>$request->name]);   
+        return Response::json($data);
     }
 
     public function delete($id){
-        $category = Category::find($id);
-        $category->delete();
+        $Category = Category::where('id', '=', $id)->first();
 
-        return redirect('admin/books/category');
-    }
-
-    public function search(Request $request){
-        if($request->searchkey != ''){
-            $allCategory = Category::where('name', 'like', "%$request->searchkey%")->get();
-            return view('admin\book\book_category_list', compact('allCategory'));
+        if(count($Category->Book) > 0){
+            return Response::json("error");
         }
-        return redirect('admin/books/category');
-    }
-    public function getSearch(){
-        return redirect('admin/books/category');
+        $Category->delete();
+        return Response::json("success");  
     }
 }

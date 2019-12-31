@@ -3,23 +3,23 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Book;
-use App\Author;
-use App\Translator;
-use App\PublishingCompany;
-use App\Publisher;
-use App\Language;
-use App\Age;
-use App\Topic;
-use App\Category;
-use App\Picture;
+use App\Models\Book;
+use App\Models\Author;
+use App\Models\Translator;
+use App\Models\PublishingCompany;
+use App\Models\Publisher;
+use App\Models\Language;
+use App\Models\Age;
+use App\Models\Topic;
+use App\Models\Category;
+use App\Models\Picture;
 
 class BookController extends Controller
 {
-    public function getIndex(){
-    	$allBook = Book::all();   	
-    	
-    	return view('admin/book/book_list', compact('allBook'));
+    public function getIndex(){ 	
+    	$books = Book::all();
+
+    	return view('admin/bookwarehouse', compact('books'));
     }
 
     public function getAddBook(){

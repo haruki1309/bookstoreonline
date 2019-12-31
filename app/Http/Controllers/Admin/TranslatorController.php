@@ -4,65 +4,49 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-
-use App\Translator;
+use Redirect,Response;
+use App\Models\Translator;
+use App\Models\Book;
 
 class TranslatorController extends Controller
 {
-    public function getIndex(){
-    	$allTranslator = Translator::all();
-    	return view('admin\book\book_translator_list', compact('allTranslator'));
+   public function index(){
+        $viewName = "dịch giả";
+        if(request()->ajax()) {
+            $translators = Translator::select('*');
+
+            return datatables()->of($translators)
+            ->addColumn('action', function($translators){
+                $id = $translators->id;
+                return (string)view('admin/bookinfo/action', compact('id'));
+            })
+            ->rawColumns(['action'])
+            ->addIndexColumn()
+            ->make(true);
+        }
+        return view('admin\bookinfo\bookinfo', compact('viewName'));
+    }
+      
+    public function edit($id)
+    {   
+        $where = array('id' => $id);
+        $Translator  = Translator::where($where)->first();
+        return Response::json($Translator);
     }
 
-    public function postIndex(Request $request){
-        $this->validate($request, [
-            'value'=>'required|unique:translator,name'
-        ], [
-            'value.required'=>'Bạn chưa nhập tên dịch giả',
-            'value.unique'=>'Dịch giả đã tồn tại'
-        ]);
-
-    	$translator = new Translator;
-    	$translator->name = $request->value;
-    	$translator->save();
-    	return redirect('admin/books/translator')->with('message', 'Thêm dịch giả thành công');
-    }
-
-    public function getEdit($id){
-    	$allTranslator = Translator::all();
-    	$edit_translator = Translator::where('id', $id)->first();
-    	return view('admin\book\book_translator_edit', compact('edit_translator', 'allTranslator'));
-    }
-
-    public function postEdit(Request $request, $id){
-        $this->validate($request, [
-            'value'=>'required|unique:translator,name'
-        ], [
-            'value.required'=>'Bạn chưa nhập tên dịch giả',
-            'value.unique'=>'Dịch giả đã tồn tại'
-        ]);
-
-    	$translator = Translator::find($id);
-    	$translator->name = $request->value;
-    	$translator->save();
-    	return redirect('admin/books/translator');
+    public function store(Request $request)
+    {  
+        $data = Translator::updateOrCreate(['id'=>$request->id], ['name'=>$request->name]);   
+        return Response::json($data);
     }
 
     public function delete($id){
-        $translator = Translator::find($id);
-        $translator->delete();
+        $Translator = Translator::where('id', '=', $id)->first();
 
-        return redirect('admin/books/translator');
-    }
-
-    public function search(Request $request){
-        if($request->searchkey != ''){
-            $allTranslator = Translator::where('name', 'like', "%$request->searchkey%")->get();
-            return view('admin\book\book_translator_list', compact('allTranslator'));
+        if(count($Translator->Book) > 0){
+            return Response::json("error");
         }
-        return redirect('admin/books/translator');
-    }
-    public function getSearch(){
-        return redirect('admin/books/translator');
+        $Translator->delete();
+        return Response::json("success");  
     }
 }

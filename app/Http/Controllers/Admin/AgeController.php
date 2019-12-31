@@ -4,65 +4,48 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-
-use App\Age;
+use Redirect,Response;
+use App\Models\Age;
+use App\Models\Book;
 
 class AgeController extends Controller
 {
-    public function getIndex(){
-    	$allAge = Age::all();
-    	return view('admin\book\book_age_list', compact('allAge'));
+    public function index(){
+        $viewName = "độ tuổi";
+        if(request()->ajax()) {
+            $ages = Age::select('*');
+
+            return datatables()->of($ages)
+            ->addColumn('action', function($ages){
+                $id = $ages->id;
+                return (string)view('admin/bookinfo/action', compact('id'));
+            })
+            ->rawColumns(['action'])
+            ->addIndexColumn()
+            ->make(true);
+        }
+        return view('admin\bookinfo\bookinfo', compact('viewName'));
+    }
+      
+    public function edit($id)
+    {   
+        $where = array('id' => $id);
+        $Age  = Age::where($where)->first();
+        return Response::json($Age);
     }
 
-    public function postIndex(Request $request){
-        $this->validate($request, [
-            'value'=>'required|unique:age,name'
-        ], [
-            'value.required'=>'Bạn chưa nhập độ tuổi',
-            'value.unique'=>'Độ tuổi đã tồn tại'
-        ]);
-
-    	$age = new Age;
-    	$age->name = $request->value;
-    	$age->save();
-    	return redirect('admin/books/age')->with('message', 'Thêm độ tuổi thành công');
-    }
-
-    public function getEdit($id){
-    	$allAge = Age::all();
-    	$edit_age = Age::where('id', $id)->first();
-    	return view('admin\book\book_age_edit', compact('edit_age', 'allAge'));
-    }
-
-    public function postEdit(Request $request, $id){
-        $this->validate($request, [
-            'value'=>'required|unique:age,name'
-        ], [
-            'value.required'=>'Bạn chưa nhập độ tuổi',
-            'value.unique'=>'Độ tuổi đã tồn tại'
-        ]);
-
-    	$age = Age::find($id);
-    	$age->name = $request->value;
-    	$age->save();
-    	return redirect('admin/books/age');
+    public function store(Request $request)
+    {  
+        $data = Age::updateOrCreate(['id'=>$request->id], ['name'=>$request->name]);   
+        return Response::json($data);
     }
 
     public function delete($id){
-        $age = Age::find($id);
-        $age->delete();
-
-        return redirect('admin/books/age');
-    }
-
-    public function search(Request $request){
-        if($request->searchkey != ''){
-            $allAge = Age::where('name', 'like', "%$request->searchkey%")->get();
-            return view('admin\book\book_age_list', compact('allAge'));
+        $Age = Age::where('id', '=', $id)->first();
+        if(count($Age->Book) > 0){
+            return Response::json("error");
         }
-        return redirect('admin/books/age');
-    }
-    public function getSearch(){
-        return redirect('admin/books/age');
+        $Age->delete();
+        return Response::json("success");  
     }
 }

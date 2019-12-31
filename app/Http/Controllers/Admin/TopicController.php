@@ -4,65 +4,49 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-
-use App\Topic;
+use Redirect,Response;
+use App\Models\Topic;
+use App\Models\Book;
 
 class TopicController extends Controller
 {
-    public function getIndex(){
-    	$allTopic = Topic::all();
-    	return view('admin\book\book_topic_list', compact('allTopic'));
+    public function index(){
+        $viewName = "chủ đề";
+        if(request()->ajax()) {
+            $topics = Topic::select('*');
+
+            return datatables()->of($topics)
+            ->addColumn('action', function($topics){
+                $id = $topics->id;
+                return (string)view('admin/bookinfo/action', compact('id'));
+            })
+            ->rawColumns(['action'])
+            ->addIndexColumn()
+            ->make(true);
+        }
+        return view('admin\bookinfo\bookinfo', compact('viewName'));
+    }
+      
+    public function edit($id)
+    {   
+        $where = array('id' => $id);
+        $topic  = Topic::where($where)->first();
+        return Response::json($topic);
     }
 
-    public function postIndex(Request $request){
-        $this->validate($request, [
-            'value'=>'required|unique:topic,name'
-        ], [
-            'value.required'=>'Bạn chưa nhập chủ đề',
-            'value.required'=>'Chủ đề đã tồn tại'
-        ]);
-
-    	$topic = new Topic;
-    	$topic->name = $request->value;
-    	$topic->save();
-    	return redirect('admin/books/topic')->with('message', 'Thêm chủ đề thành công');
-    }
-
-    public function getEdit($id){
-    	$allTopic = Topic::all();
-    	$edit_topic = Topic::where('id', $id)->first();
-    	return view('admin\book\book_topic_edit', compact('edit_topic', 'allTopic'));
-    }
-
-    public function postEdit(Request $request, $id){
-        $this->validate($request, [
-            'value'=>'required|unique:topic,name'
-        ], [
-            'value.required'=>'Bạn chưa nhập chủ đề',
-            'value.required'=>'Chủ đề đã tồn tại'
-        ]);
-
-    	$topic = Topic::find($id);
-    	$topic->name = $request->value;
-    	$topic->save();
-    	return redirect('admin/books/topic');
+    public function store(Request $request)
+    {  
+        $data = Topic::updateOrCreate(['id'=>$request->id], ['name'=>$request->name]);   
+        return Response::json($data);
     }
 
     public function delete($id){
-        $topic = Topic::find($id);
-        $topic->delete();
+        $topic = Topic::where('id', '=', $id)->first();
 
-        return redirect('admin/books/topic');
-    }
-
-    public function search(Request $request){
-        if($request->searchkey != ''){
-            $allTopic = Topic::where('name', 'like', "%$request->searchkey%")->get();
-            return view('admin\book\book_topic_list', compact('allTopic'));
+        if(count($topic->Book) > 0){
+            return Response::json("error");
         }
-        return redirect('admin/books/topic');
-    }
-    public function getSearch(){
-        return redirect('admin/books/topic');
+        $topic->delete(); 
+        return Response::json("success");  
     }
 }

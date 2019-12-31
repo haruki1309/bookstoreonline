@@ -4,65 +4,49 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-
-use App\Language;
+use Redirect,Response;
+use App\Models\language;
+use App\Models\Book;
 
 class LanguageController extends Controller
 {
-	public function getIndex(){
-    	$allLanguage = Language::all();
-    	return view('admin\book\book_language_list', compact('allLanguage'));
+	public function index(){
+        $viewName = "ngôn ngữ";
+        if(request()->ajax()) {
+            $languages = Language::select('*');
+
+            return datatables()->of($languages)
+            ->addColumn('action', function($languages){
+                $id = $languages->id;
+                return (string)view('admin/bookinfo/action', compact('id'));
+            })
+            ->rawColumns(['action'])
+            ->addIndexColumn()
+            ->make(true);
+        }
+        return view('admin\bookinfo\bookinfo', compact('viewName'));
+    }
+      
+    public function edit($id)
+    {   
+        $where = array('id' => $id);
+        $language  = Language::where($where)->first();
+        return Response::json($language);
     }
 
-    public function postIndex(Request $request){
-        $this->validate($request, [
-            'value'=>'required|unique:language,name'
-        ], [
-            'value.required'=>'Bạn chưa nhập ngôn ngữ',
-            'value.unique'=>'Ngôn ngữ đã tồn tại'
-        ]);
-
-    	$language = new Language;
-    	$language->name = $request->value;
-    	$language->save();
-    	return redirect('admin/books/language')->with('message', 'Thêm ngôn ngữ thành công');
-    }
-
-    public function getEdit($id){
-    	$allLanguage = Language::all();
-    	$edit_language = Language::where('id', $id)->first();
-    	return view('admin\book\book_language_edit', compact('edit_language', 'allLanguage'));
-    }
-
-    public function postEdit(Request $request, $id){
-        $this->validate($request, [
-            'value'=>'required|unique:language,name'
-        ], [
-            'value.required'=>'Bạn chưa nhập ngôn ngữ',
-            'value.unique'=>'Ngôn ngữ đã tồn tại'
-        ]);
-
-    	$language = Language::find($id);
-    	$language->name = $request->value;
-    	$language->save();
-    	return redirect('admin/books/language');
+    public function store(Request $request)
+    {  
+        $data = Language::updateOrCreate(['id'=>$request->id], ['name'=>$request->name]);   
+        return Response::json($data);
     }
 
     public function delete($id){
-        $language = Language::find($id);
-        $language->delete();
+        $language = Language::where('id', '=', $id)->first();
 
-        return redirect('admin/books/language');
-    }
-
-    public function search(Request $request){
-        if($request->searchkey != ''){
-            $allLanguage = Language::where('name', 'like', "%$request->searchkey%")->get();
-            return view('admin\book\book_language_list', compact('allLanguage'));
+        if(count($language->Book) > 0){
+            return Response::json("error");
         }
-        return redirect('admin/books/language');
-    }
-    public function getSearch(){
-        return redirect('admin/books/language');
+        $language->delete();
+        return Response::json("success");  
     }
 }
