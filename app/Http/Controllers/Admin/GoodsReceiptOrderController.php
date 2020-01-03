@@ -15,10 +15,14 @@ class GoodsReceiptOrderController extends Controller
     	return view('admin/bookorder/goods_receipt_order');
     }
 
-    public function create(){
+    public function create_view(){
         $suppliers = Supplier::all();
 
     	return view('admin/bookorder/goods_receipt_order_create', compact('suppliers'));
+    }
+
+    public function create(Request $request){
+        dd($request->listbook->data-stuff);
     }
 
     public function mapTable(Request $request){

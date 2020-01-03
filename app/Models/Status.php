@@ -10,6 +10,6 @@ class Status extends Model
     public $timestamps = false;
 
     public function Order(){
-    	return $this->hasMany('App\Order');
+    	return $this->hasMany('App\Models\Order');
     }
 }

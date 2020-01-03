@@ -10,6 +10,6 @@ class Advertiserment extends Model
     public $timestamps = false;
 
     public function Book(){
-    	return $this->belongsToMany('App\Book');
+    	return $this->belongsToMany('App\Models\Book');
     }
 }

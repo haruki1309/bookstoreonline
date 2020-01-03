@@ -10,6 +10,6 @@ class Address extends Model
     public $timestamps = false;
 
     public function User(){
-    	return belongsToMany('App\User');
+    	return belongsToMany('App\Models\User');
     }
 }

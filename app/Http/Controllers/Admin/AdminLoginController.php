@@ -26,7 +26,6 @@ class AdminLoginController extends Controller
 
     	if(Auth::guard('admin')->attempt(['username'=>$request->username,'password'=>$request->password]))
     	{
-    	
     		return redirect('admin/books');
     	}
     	else

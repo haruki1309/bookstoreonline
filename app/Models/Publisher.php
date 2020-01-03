@@ -11,6 +11,6 @@ class Publisher extends Model
     protected $fillable = ['id', 'name'];
 
     public function Book(){
-    	return $this->hasMany('App\Book');
+    	return $this->hasMany('App\Models\Book');
     }
 }

@@ -31,7 +31,7 @@ $(document).ready(function() {
     });
 
     $('#supplier-name').change(function(){
-        var tbl_length = $('#order-tbl').data('stuff').length;
+        var tbl_length = $('#receipt-form input[name="listbook[]"]').length;
         var confirmStr = "Thao tác này sẽ xóa dữ liệu trong bảng Danh sách đầu sách, xác nhận tiếp tục?";
         if(tbl_length == 0 || (tbl_length > 0 && confirm(confirmStr))){
             var BASEURL =  window.location.origin+window.location.pathname;
@@ -51,7 +51,7 @@ $(document).ready(function() {
                     $('#dataTable').DataTable().rows.add(data.data).draw();
                     //clear books list table
                     $('#order-tbl > tbody').html("");
-                    $('#order-tbl').data('stuff').length = 0;
+                   
                 }
             });
         }
@@ -73,10 +73,9 @@ $(document).ready(function() {
             success: function(data){ 
                 var row = "<tr book-id="+data.id+"><td>"+data.title+"</td><td contenteditable='true'>"+data.unitPrice+"</td><td contenteditable='true'></td><td><a href='javascript:void(0);' id='delete-row' class='delete btn btn-danger btn-circle ml-1 btn-sm'><i class='fas fa-trash'></i></a></td></tr>";
 
-                if(!$('#order-tbl').data('stuff').includes(bookID)){
+                if(true){
                     $('#order-tbl > tbody').append(row);
-                    $('#order-tbl').data('stuff').push(data.id);
-                    console.log($('#order-tbl').data('stuff'));
+                    $('#receipt-form').append('<input type="hidden" name="listbook[]" value="'+data.id+'"/>')
                 }
                 else{
                     alert('"' + data.title + '" đã được thêm vào đơn đặt hàng');
@@ -87,12 +86,6 @@ $(document).ready(function() {
 
     $('body').on('click', '#delete-row', function(){
         $(this).parent().parent().remove();
-        var arr = $('#order-tbl').data('stuff');
-        $('#order-tbl').data('stuff') = jQuery.grep($('#order-tbl').data('stuff'), function(value){
-            return value != $(this).parent().parent().attr('book-id');
-        })
-
-        console.log($('#order-tbl').data('stuff'));
     });
 });
 </script>
@@ -104,19 +97,25 @@ Tạo phiếu nhập hàng
 
 @section('content')
 <div class="card shadow mb-4">
-    <div class="card-header py-3">
+    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
         <h6 class="m-0 font-weight-bold text-primary">Thông tin phiếu nhập</h6>
+        <button class="btn btn-primary btn-circle btn-sm" type="submit" form="receipt-form">
+            <i class="fas fa-plus"></i>
+        </button>
+
     </div>
     <div class="card-body">
-        <form method="post">
+        <form id="receipt-form" method="post" action="{{url('admin/goods-receipt-order/create-recept')}}">
+            <input type="hidden" name="_token" value="{{csrf_token()}}">
+            <input type="hidden" name="listbook[]">
             <div class="row">
                 <div class="form-group col-lg-6">
                     <label for="date">Ngày nhập</label>
-                    <input type="text" class="form-control" value="{{date('d/m/Y', time())}}" readonly>
+                    <input name="receiptdate" type="text" class="form-control" value="{{date('d/m/Y', time())}}" readonly>
                 </div>
                 <div class="form-group col-lg-6">
                     <label for="supplier-name">Nhà cung cấp</label>
-                    <select id="supplier-name" class="selectpicker form-control" data-live-search="true">
+                    <select name="supplierid" id="supplier-name" class="selectpicker form-control" data-live-search="true">
                         <option disabled selected value>-- Chọn nhà cung cấp --</option>
                         @foreach($suppliers as $supplier)
                         <option supplier-id="{{$supplier->id}}">{{$supplier->name}}</option>
@@ -161,7 +160,7 @@ Tạo phiếu nhập hàng
             <div class="card-body">
                 <form >
                     <div class="table-responsive">
-                        <table id="order-tbl" class="table table-bordered" width="100%" cellspacing="0" data-stuff='[]'>
+                        <table id="order-tbl" class="table table-bordered" width="100%" cellspacing="0">
                             <thead>
                                 <tr>
                                     <th>Tựa sách</th>
