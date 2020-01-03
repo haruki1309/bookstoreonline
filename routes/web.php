@@ -18,7 +18,7 @@ Route::group(['prefix'=>'admin'], function(){
 	//book route ------------------------------------------------------
 
 	Route::get('/', function(){
-		return redirect('admin/books');
+		return redirect('admin/warehouse');
 	});
 
 	Route::post('book-search', 'Admin\BookController@search');
@@ -146,4 +146,25 @@ Route::group(['prefix'=>'admin'], function(){
 	Route::get('goods-receipt-order/create', 'Admin\GoodsReceiptOrderController@create');
 	Route::post('goods-receipt-order/create/map-table', 'Admin\GoodsReceiptOrderController@mapTable');
 	Route::post('goods-receipt-order/create/add-list', 'Admin\GoodsReceiptOrderController@addList');
+
+	//admin router
+	Route::get('admin','Admin\AdminController@index');
+	Route::get('admin/create','Admin\AdminController@getCreate');
+	Route::get('admin/edit/{id}','Admin\AdminController@getEdit');
+	Route::get('admin/delete/{id}','Admin\AdminController@getDelete');
+	Route::post('admin/create','Admin\AdminController@postCreate');
+	Route::post('admin/edit','Admin\AdminController@postEdit');
+	Route::post('admin/delete/{id}','Admin\AdminController@postDelete');
+
+	//route router
+	
+	Route::get('role','Admin\RoleController@index');
+	Route::get('role/create','Admin\RoleController@getCreate');
+	Route::get('role/edit/{id}','Admin\RoleController@getEdit');
+	Route::get('role/delete/{id}','Admin\RoleController@getDelete');
+	Route::post('role/create','Admin\RoleController@postCreate');
+	Route::post('role/edit/{id}','Admin\RoleController@postEdit');
+	Route::post('role/delete/{id}','Admin\RoleController@postDelete');
+
+	Route::post('admin');
 });

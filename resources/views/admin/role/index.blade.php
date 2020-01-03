@@ -1,7 +1,7 @@
 @extends('admin.master')
 
 @section('title')
-Kho sách
+Quyền
 @stop
 
 @section('css')
@@ -22,13 +22,13 @@ Kho sách
 @stop
 
 @section('pageheader')
-Kho sách
+Quyền
 @stop
 
 @section('content')
 <div class="card shadow mb-4">
     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-        <h6 class="m-0 font-weight-bold text-primary">Dữ liệu đầu sách</h6>
+        <h6 class="m-0 font-weight-bold text-primary">Danh sách quyền</h6>
         <a href="" class="btn btn-primary btn-circle btn-sm" id="create-new">
             <i class="fas fa-plus"></i>
         </a> 
@@ -38,24 +38,28 @@ Kho sách
             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                 <thead>
                     <tr>
-                        <th>Tên sách</th>
-                        <th>Tác giả</th>
-                        <th>Số lượng</th>
-                        <th>Giá bìa</th>
+                        <th>#</th>
+                        <th>Quyền</th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
-                	@foreach($books as $book)
+                	@foreach($all as $role)
                     <tr>
-                        <td>{{$book->title}}</td>
-                        <td>{{$book->Author[0]->name}}</td>
-                        <td>{{$book->inventory_number}}</td>
-                        <td>{{$book->price.' đ'}}</td>
+                        <td>{{$role->id}}</td>
+                        <td>{{$role->name}}</td>
                         <td>
-                        	<a href="#" class="btn btn-circle btn-sm bg-primary text-gray-100">
+                        	<a href="role/edit/{{$role->id}}" class="btn btn-circle btn-sm bg-primary text-gray-100">
                         		<i class="far fa-edit"></i>
-                        	</a>:
+                        	</a>
+
+                        	<a href="role/delete/{{$role->id}}" class="delete btn btn-danger btn-circle ml-1 btn-sm" >
+                        		<i class="fas fa-trash"></i>
+                        	</a>
+
+                          {{--   <a href="role/views/{{$role->id}}" class="delete btn btn-danger btn-circle ml-1 btn-sm" >
+                                <i class="far fa-views"></i>
+                            </a> --}}
                         </td>
                     </tr>
                     @endforeach

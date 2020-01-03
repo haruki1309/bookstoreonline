@@ -115,9 +115,15 @@
             </div>
 
             <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link" href="{{url('admin/admin')}}">
                 <i class="fas fa-fw fa-folder"></i>
-                <span>Danh sách nhân viên</span>
+                <span>Nhân viên</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{url('admin/role')}}">
+                <i class="fas fa-fw fa-folder"></i>
+                <span>Phân quyền</span>
                 </a>
             </li>
 
@@ -359,7 +365,15 @@
     <!-- Core plugin JavaScript-->
     <script src="{{url('vendor/jquery-easing/jquery.easing.min.js')}}"></script>
     <!-- Custom scripts for all pages-->
-    <script src="{{url('js/admin/sb-admin-2.min.js')}}"></script>
+    <script src="{{url('js/admin/sb-admin-2.min.js')}}"></script>  
+
+    <script>
+        var msg = '{{Session::get('message')}}';
+        var exist = '{{Session::has('message')}}';
+        if(exist){
+          alert(msg);
+        }
+    </script>
     @section('js')
     @show
 </body>

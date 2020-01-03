@@ -10,8 +10,15 @@ class Admin extends Model
     protected $guarded = ['id'];
     protected $hidden = 
     ['password', 'remember_token'];
+    public $timestamps = false;
+
+    
     public function getAuthPassword()
     {
     	return $this->password;
+    }
+
+    public function Role(){
+    	return $this->belongsTo('App\Models\Role');
     }
 }

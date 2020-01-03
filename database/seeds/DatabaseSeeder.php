@@ -14,7 +14,18 @@ class DatabaseSeeder extends Seeder
     	Eloquent::unguard();
         $path = 'database/seeds/SeederData.sql';
         DB::unprepared(file_get_contents($path));
+        $admin = [
+            [ 
+                'username'=>'cy',
+                'password'=>bcrypt('cy')
 
+            ],
+            [
+                'username'=>'tinchodien',
+                'password'=>bcrypt('111112')
+            ]
+        ];
+        DB::table('admin')->insert($admin);
         $this->command->info('Insert data successfull!');
     }
 }
