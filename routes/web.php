@@ -12,7 +12,36 @@ use App\User;
 | contains the "web" middleware group. Now create something great!
 |
 */
+//page route
+Route::get('/homepage', 'Client\PageController@homepage');
+Route::get('/shop', 'Client\PageController@shop');
+Route::get('/checkout', 'Client\PageController@checkout');
+Route::get('/account', 'Client\PageController@account');
+Route::get('/books/{id}', 'Client\PageController@detail');
+Route::get('/signin', 'Client\LoginController@getSigninPage');
+Route::post('/login', 'Client\LoginController@login');
+Route::get('/logout', 'Client\LoginController@logout');
 
+//cart route
+Route::post('add-to-cart', 'Client\CartController@addtocart');
+Route::post('checkout/cart/update', 'Client\CartController@update');
+Route::post('checkout/cart/delete', 'Client\CartController@delete');
+Route::get('checkout/cart', 'Client\CartController@getCartView');
+//checkout
+Route::get('checkout/information', 'Client\CheckoutController@information');
+
+Route::get('/show-book-in-modal/{id}', 'Client\CartController@showBookInModal');
+
+Route::get('/cart-test', function(){
+	// Cart::destroy();
+	//Cart::restore('1');
+	//dd(User::get());
+	//$book = Cart::content()->where('id', 7)->first();
+	dd(Cart::content());
+	//Cart::store(1);
+});
+
+Route::get('{object}/{id}', 'Client\SearchController@searchByObject');
 Route::group(['prefix'=>'admin'], function(){
 	Route::get('logout', 'Admin\AdminLoginController@logout');
 	//book route ------------------------------------------------------
@@ -143,7 +172,8 @@ Route::group(['prefix'=>'admin'], function(){
 
 	//goods receipt order
 	Route::get('goods-receipt-order', 'Admin\GoodsReceiptOrderController@index');
-	Route::get('goods-receipt-order/create', 'Admin\GoodsReceiptOrderController@create');
+	Route::get('goods-receipt-order/create', 'Admin\GoodsReceiptOrderController@create_view');
+	Route::post('goods-receipt-order/create-recept', 'Admin\GoodsReceiptOrderController@create');
 	Route::post('goods-receipt-order/create/map-table', 'Admin\GoodsReceiptOrderController@mapTable');
 	Route::post('goods-receipt-order/create/add-list', 'Admin\GoodsReceiptOrderController@addList');
 

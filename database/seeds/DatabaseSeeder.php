@@ -16,16 +16,23 @@ class DatabaseSeeder extends Seeder
         DB::unprepared(file_get_contents($path));
         $admin = [
             [ 
-                'username'=>'cy',
-                'password'=>bcrypt('cy')
 
-            ],
-            [
-                'username'=>'tinchodien',
-                'password'=>bcrypt('111112')
+                'username'=>'admin',
+                'password'=>bcrypt('admin')
+
             ]
         ];
         DB::table('admin')->insert($admin);
+
+        $user = [
+            [
+                'name'=>'Bùi Trung Tín',
+                'email'=>'trungtin0904@gmail.com',
+                'phone'=>'0786481276',
+                'password'=>bcrypt('trungtin0404')
+            ]
+        ];
+        DB::table('user')->insert($user);
         $this->command->info('Insert data successfull!');
     }
 }

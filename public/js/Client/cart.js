@@ -1,96 +1,106 @@
 $(document).ready(function(){
-	var btnAdd = $('.bookDetail .bookDetailAmount .add-book .add-btn');
-	var btnRemove = $('.bookDetail .bookDetailAmount .add-book .remove-btn');
-	var bookCountEle = $('.bookDetail .bookDetailAmount .add-book .book-number');
-	var currentBookCount = bookCountEle.text();
-	var btnDelete = $('.bookDetail .bookDetailInfo .deleteButton');
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
 
-	var updateQtyAjax = function(_bookID, _itemID, _qty){
-		var url = 'cart/update';
+    Number.prototype.moneyformat = function() {
+        return this.toFixed(2).replace('.', ',').replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.') + "đ";
+    };
 
-		$.ajaxSetup({
-          	headers: {
-		    	'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-		  	}
- 		});
+    var addBookToCart = function(_bookID, _qty){
+        var baseurl = $('meta[name="asset"]').attr('content'); 
+        
+        $.ajax({
+            method: 'post',
+            url: baseurl+'/add-to-cart',
+            data: {book_id: _bookID, qty: _qty},
+            dataType: 'json',
+            success:function(data)
+            {
+                $('.nav-cart-count').html(data.cartCount);
+                $('.add-to-cart-product').html(data.cartView);
+            }
+        });
+    };
 
-		$.ajax({
-			method: 'post',
-			url: url,
-			data: {book_id: _bookID, id: _itemID, qty: _qty},
-			dataType: 'json',
-			success:function(data)
-			{
-				if(data.newQty === 0){
-					alert('Số lượng chọn vượt quá số lượng sách tồn trong kho');
-				}
-				else{
-					bookCountEle.text(data.newQty);
-					$('#mainNav #cart #cartAmount').text(data.cartCount);
-					$('#payingSection #feeSection #temporary #temporaryValue').text(data.cartTotal + " đ");
-					$('#payingSection #feeSection #final #finalValue').text(data.cartTotal + " đ");
+    $('.btn-add-to-cart-modal').click(function(){
+        var count = $('#french-hens').val();
+        var bookid = $(this).data('bookid');
+        addBookToCart(bookid, count);
+    });
 
-					$('#category-name').text('GIỎ HÀNG (' + data.cartCount + ' SẢN PHẨM)');
-				}
-			}
-		});
-	};
+    $('.btn-add-to-cart').click(function(){
+        var bookid = $(this).data('bookid');
+        addBookToCart(bookid, 1);
+    });
 
-	btnAdd.click(function(){
-		var itemID = $(this).closest('.bookDetail').find('#item-id').val();	
-		var bookID = $(this).closest('.bookDetail').find('#book-id').val();	
-		currentBookCount = bookCountEle.text();
-		currentBookCount++;
-		updateQtyAjax(bookID, itemID, currentBookCount);		
-	});
+    //in cart detail page 
+    $('.cart-delete-item').click(function(){
+        var $row = $(this).parent().parent();
+        var baseurl = $('meta[name="asset"]').attr('content'); 
 
-	btnRemove.click(function(){
-		var itemID = $(this).closest('.bookDetail').find('#item-id').val();	
-		var bookID = $(this).closest('.bookDetail').find('#book-id').val();
-		currentBookCount = bookCountEle.text();
+        $.ajax({
+            method: 'post',
+            url: baseurl+'/checkout/cart/delete',
+            data: {itemid: $row.data('itemid')},
+            dataType: 'json',
+            success:function(data)
+            {
+                $('.nav-cart-count').html(data.cartCount);
+                $('.add-to-cart-product').html(data.cartView);
+                $('.total-price').html(data.cartTotal + ' đ');
+                $row.remove();
+            }
+        });
+    });
 
-		if(currentBookCount > 1){
-			currentBookCount--;
-			updateQtyAjax(bookID, itemID, currentBookCount);	
-		}
-	});
+    var updateItemQty = function(itemid, qty){
+        var baseurl = $('meta[name="asset"]').attr('content'); 
+        $.ajax({
+            method: 'post',
+            url: baseurl+'/checkout/cart/update',
+            data: {itemid: itemid, qty: qty},
+            dataType: 'json',
+            success:function(data)
+            {
+                $('.nav-cart-count').html(data.cartCount);
+                $('.add-to-cart-product').html(data.cartView);
+                $('.total-price').html(data.cartTotal + ' đ');
+                
+            }
+        });
+    }
 
-	btnDelete.click(function(){
-		var itemID = $(this).closest('.bookDetail').find('#item-id').val();
-		var bookID = $(this).closest('.bookDetail').find('#book-id').val();
+    $('.dec-qtybutton').click(function(){
+        var $row = $(this).parent().parent().parent();
+        var qtyInput = $(this).parent().find('.ip-item-qty');
+        var min = qtyInput.attr('min');
+        var max = qtyInput.attr('max');
 
-		var url = 'cart/delete';
-		$.ajaxSetup({
-          	headers: {
-		    	'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-		  	}
- 		});
+        if(qtyInput.val() > min){
+            qtyInput.val(parseInt(qtyInput.val()) - 1);
+            updateItemQty($row.data('itemid'), qtyInput.val());
 
-		$.ajax({
-			method: 'post',
-			url: url,
-			data: {book_id: bookID, id: itemID},
-			dataType: 'json',
-			success:function(data)
-			{
-				//update giao dien
+            var tempprice = parseInt(qtyInput.val()) * $row.find('.product-unit-price').attr('price');
+            $row.find('.product-price').html(tempprice.moneyformat());
+        }
+    });
 
-				$('#mainNav #cart #cartAmount').text(data.cartCount);
+    $('.inc-qtybutton').click(function(){
+        var $row = $(this).parent().parent().parent();
+        var qtyInput = $(this).parent().find('.ip-item-qty');
+        var min = qtyInput.attr('min');
+        var max = qtyInput.attr('max');
 
-				$('#payingSection #feeSection #temporary #temporaryValue').text(data.cartTotal + " đ");
-				$('#payingSection #feeSection #final #finalValue').text(data.cartTotal + " đ");
+        if(qtyInput.val() < max){
+            qtyInput.val(parseInt(qtyInput.val()) + 1);
 
-				$('#category-name').text('GIỎ HÀNG (' + data.cartCount + ' SẢN PHẨM)');
+            updateItemQty($row.data('itemid'), qtyInput.val());
 
-				if(data.cartCount == 0){
-					$('#noBooksCart').css('display', 'flex');
-					$('#category-name').css('display', 'block');
-					$('#mayLike').css('display', 'block');
-					$('#booksCart').css('display', 'none');
-				}
-			}
-		});
-
-		$(this).closest('.bookDetail').remove();
-	});
+            var tempprice = parseInt(qtyInput.val()) * $row.find('.product-unit-price').attr('price');
+            $row.find('.product-price').html(tempprice.moneyformat());
+        }
+    });
 });

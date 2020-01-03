@@ -9,18 +9,18 @@ class Order extends Model
     public $timestamps = true;
 
     public function Book(){
-    	return $this->belongsToMany('App\Book')->withPivot('amount', 'price');
+    	return $this->belongsToMany('App\Models\Book')->withPivot('amount', 'price');
     }
 
     public function Status(){
-    	return $this->belongsTo('App\Status');
+    	return $this->belongsTo('App\Models\Status');
     }
 
     public function User(){
-    	return $this->belongsTo('App\User');
+    	return $this->belongsTo('App\Models\User');
     }
 
     public function MethodDelivery(){
-        return $this->belongsTo('App\MethodDelivery');
+        return $this->belongsTo('App\Models\MethodDelivery');
     }
 }

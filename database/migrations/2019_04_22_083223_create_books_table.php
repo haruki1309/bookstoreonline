@@ -27,8 +27,9 @@ class CreateBooksTable extends Migration
             $table->integer('number_of_pages');
             $table->integer('inventory_number');
             $table->integer('price');
-            $table->integer('sale');
-            $table->float('rating');
+            $table->integer('sale')->default(0);
+            $table->float('rating')->default(5.0);
+            $table->date('created_at');
         });
     }
 

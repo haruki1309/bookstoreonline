@@ -10,10 +10,10 @@ class Comment extends Model
     public $timestamps = false;
 
     public function Book(){
-    	return $this->belongsTo('App\Book');
+    	return $this->belongsTo('App\Models\Book');
     }
 
     public function User(){
-    	return $this->belongsTo('App\User');
+    	return $this->belongsTo('App\Models\User');
     }
 }

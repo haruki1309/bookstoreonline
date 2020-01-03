@@ -13,18 +13,18 @@ class User extends Authenticatable
     public $timestamps = false;
 
     public function Address(){
-    	return $this->hasMany('App\Address');
+    	return $this->hasMany('App\Models\Address');
     }
 
     public function Order(){
-    	return $this->hasMany('App\Order');
+    	return $this->hasMany('App\Models\Order');
     }
 
     public function Comment(){
-    	return $this->hasMany('App\Comment');
+    	return $this->hasMany('App\Models\Comment');
     }
 
     public function QuestionAnswer(){
-        return $this->hasMany('App\QuestionAnswer');
+        return $this->hasMany('App\Models\QuestionAnswer');
     }
 }

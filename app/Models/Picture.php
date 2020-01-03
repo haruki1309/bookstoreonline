@@ -10,6 +10,6 @@ class Picture extends Model
     public $timestamps = false;
 
     public function Book(){
-    	return $this->belongsTo('App\Book');
+    	return $this->belongsTo('App\Models\Book');
     }
 }
