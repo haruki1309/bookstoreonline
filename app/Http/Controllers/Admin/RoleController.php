@@ -22,11 +22,18 @@ class RoleController extends Controller{
 	}
 
 	public function index(Request $request){
+		$can_edit = $request->can_edit;
+        $can_delete = $request->can_delete;
+		if($request->can_read==0){
+           return redirect('admin/warehouse')->with('message', 'Bạn không có quyền xem'); 
+        }
 		$all = Role::all();
-		return view('admin\role\index', compact('all'));
+		return view('admin\role\index', compact('all','can_edit','can_delete'));
 	}
 
 	public function getEdit(Request $request){
+		$can_edit = 1;
+        $can_delete = 1;
 		$id = $request->id;
 		$role = Role::find($id);
 		// $all = $role->Menu;
@@ -34,7 +41,7 @@ class RoleController extends Controller{
                   'LEFT JOIN menu_role ON menu.id = menu_role.menu_id '.
                   'AND menu_role.role_id =  ?';
         $all = DB::select($query,[$id]);
-		return view('admin\role\edit',compact('all','role'));
+		return view('admin\role\edit',compact('all','role','can_edit','can_delete'));
 	}
 
 	public function postEdit(Request $request){

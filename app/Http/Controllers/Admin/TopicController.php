@@ -10,7 +10,10 @@ use App\Models\Book;
 
 class TopicController extends Controller
 {
-    public function index(){
+    public function index(Request $request){
+        if($request->can_read==0){
+           return redirect('admin/warehouse')->with('message', 'Bạn không có quyền xem'); 
+        }
         $viewName = "chủ đề";
         if(request()->ajax()) {
             $topics = Topic::select('*');
@@ -24,7 +27,7 @@ class TopicController extends Controller
             ->addIndexColumn()
             ->make(true);
         }
-        return view('admin\bookinfo\bookinfo', compact('viewName'));
+        return view('admin\bookinfo\bookinfo', compact('viewName','can_edit','can_delete'));
     }
       
     public function edit($id)

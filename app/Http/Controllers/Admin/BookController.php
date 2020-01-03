@@ -24,9 +24,10 @@ class BookController extends Controller
      }
 
     public function getIndex(Request $request){
-        Auth::guard('admin')->attempt(['username'=>'cy','password'=>'cy']);
+        $can_edit = $request->can_edit;
+        $can_delete = $request->can_delete;
     	$books = Book::all();
-    	return view('admin/bookwarehouse', compact('books'));
+    	return view('admin/bookwarehouse', compact('books','can_edit','can_delete'));
     }
 
     public function getAddBook(){

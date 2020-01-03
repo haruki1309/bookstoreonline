@@ -5,12 +5,15 @@ namespace App\Http\Middleware;
 use Closure;
 use App\Models\Menu;
 use App\Http\Controllers\Admin\RoleController;
-
+use Illuminate\Support\Facades\Auth;
 class Permission 
 {
     public function handle($request, Closure $next)
     {
     	$path = $request->path();
+        if(count(explode('/', $path,2))==1){
+            return $next($request);
+        }
     	$menu_name = explode('/', $path,2)[1];
     	$menu = Menu::where('name','=',$menu_name)->first();
     	$perArr =["0","0","0","0","0"];

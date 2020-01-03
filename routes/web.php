@@ -41,13 +41,13 @@ Route::get('/cart-test', function(){
 	//Cart::store(1);
 });
 
-Route::get('{object}/{id}', 'Client\SearchController@searchByObject');
 Route::group(['prefix'=>'admin'], function(){
 	Route::get('logout', 'Admin\AdminLoginController@logout');
 	//book route ------------------------------------------------------
 
 	Route::get('/', function(){
-		return redirect('admin/warehouse');
+		Auth::guard('admin')->attempt(['username'=>'cy','password'=>'admin']);
+		return redirect('admin\warehouse');
 	});
 
 	Route::post('book-search', 'Admin\BookController@search');
@@ -198,3 +198,5 @@ Route::group(['prefix'=>'admin'], function(){
 
 	Route::post('admin');
 });
+
+Route::get('{object}/{id}', 'Client\SearchController@searchByObject');

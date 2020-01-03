@@ -373,7 +373,12 @@
         if(exist){
           alert(msg);
         }
+
     </script>
+
+    <input type="hidden" name="iscanedit" id="iscanedit" value="{{$can_edit}}">
+    <input type="hidden" name="iscandelete" id="iscandelete" value="{{$can_delete}}">
+
     @section('js')
     @show
 </body>

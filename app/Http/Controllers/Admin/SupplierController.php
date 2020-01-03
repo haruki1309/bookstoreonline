@@ -10,7 +10,10 @@ use App\Models\Book;
 
 class SupplierController extends Controller
 {
-    public function index(){   
+    public function index(Request $request){   
+        if($request->can_read==0){
+           return redirect('admin/warehouse')->with('message', 'Bạn không có quyền xem'); 
+        }
         $suppliers = Supplier::all();
 
         return view('admin\bookorder\supplier', compact('suppliers'));

@@ -10,8 +10,13 @@ use App\Models\Book;
 
 class LanguageController extends Controller
 {
-	public function index(){
+	public function index(Request $request){
         $viewName = "ngôn ngữ";
+          $can_edit = $request->can_edit;
+        $can_delete = $request->can_delete;
+        if($request->can_read==0){
+           return redirect('admin/warehouse')->with('message', 'Bạn không có quyền xem'); 
+        }
         if(request()->ajax()) {
             $languages = Language::select('*');
 
@@ -24,7 +29,7 @@ class LanguageController extends Controller
             ->addIndexColumn()
             ->make(true);
         }
-        return view('admin\bookinfo\bookinfo', compact('viewName'));
+        return view('admin\bookinfo\bookinfo', compact('viewName','can_edit','can_delete'));
     }
       
     public function edit($id)
