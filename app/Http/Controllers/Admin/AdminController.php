@@ -52,4 +52,8 @@ class AdminController extends Controller{
 		
 	 	return redirect('admin/admin')->with('message', 'Chỉnh sửa thành công');
 	}
+
+	public function postCreate(Request $request){
+		 
+	}	
 }

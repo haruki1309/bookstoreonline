@@ -23,32 +23,28 @@ Danh sách người dùng
 <script type="text/javascript">
     $('#exampleModal').on('show.bs.modal', function (event) {
   var button = $(event.relatedTarget) // Button that triggered the modal
-  var id = button.data('whatever') 
-  var name = button.data('whatever2') 
-  var role = button.data('whatever3') 
-  var type = button.data('whatever4') 
+  var id = button.data('id') 
+  var answer_details = button.data('answer_details') 
+ 
+
   var modal = $(this)
   modal.find('.modal-title').text('Thông tin tài khoản')
   modal.find('#id').val(id)
-  modal.find('#name').val(name)
-  modal.find('#roleid').val(role)
-  modal.find('#type').val(type)
+  modal.find('#answer_details').val(answer_details)
+  
 
 });
 </script>
 @stop
 
 @section('pageheader')
-Danh sách
+Quảng cáo
 @stop
 
 @section('content')
 <div class="card shadow mb-4">
     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-        <h6 class="m-0 font-weight-bold text-primary">Danh sách người dùng</h6>
-        <a class="btn btn-primary btn-circle btn-sm" id="create-new"  data-toggle="modal" data-target="#exampleModal" data-whatever=""  data-whatever2="" data-whatever3="" data-whatever4="create" >
-            <i class="fas fa-plus"></i>
-        </a> 
+        <h6 class="m-0 font-weight-bold text-primary">Danh sách quảng cáo</h6>
     </div>
     <div class="card-body">
         <div class="table-responsive">
@@ -56,27 +52,38 @@ Danh sách
                 <thead>
                     <tr>
                         <th>#</th>
-                        <th>Tên</th>
-                        <th>Quyền</th>
-                        <th></th>
+                        <th>Tên sách</th>
+                        <th>Người dùng</th>
+                        <th>Thời gian hỏi</th>
+                        <th>Chi tiết câu hỏi </th>
+                        <th>Admin</th>
+                        <th>Thời gian trả lời</th>
+                        <th>Chi tiết câu trả lời</th>
+
+                        <th>  </th>
                     </tr>
                 </thead>
                 <tbody>
-                	@foreach($all as $user)
+                	@foreach($all as $qus)
                     <tr>
-                        <td>{{$user->id}}</td>
-                        <td>{{$user->username}}</td>
-                        <td>{{$roles->find($user->role_id)->name}} </td>
+                        <td>{{$qus->id}}</td>
+                        <td>{{$books->find($qus->book_id)->title}}</td>
+                        <td>{{$admins->find($qus->user_id)->username}} </td>
+                        <td>{{$qus->time_ask}}</td>
+                        <td>{{$qus->ask_details}}</td>
+                        <td>{{$admins->find($qus->admin_id)->username}}</td>
+                        <td>{{$qus->time_answer}}</td>
+                        <td>{{$qus->answer_details}}</td>
                         <td>
                           {{--   <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Open modal for @mdo</button> --}}
                           @if($can_edit==1)
-                                <a class="delete btn btn-danger btn-circle ml-1 btn-sm"  data-toggle="modal" data-target="#exampleModal" data-whatever="{{$user->id}}"  data-whatever2="{{$user->username}}" data-whatever3="{{$user->role_id}}" data-whatever4="edit"  >
+                                <a class="edit btn btn-success btn-circle btn-sm edit-row"  data-toggle="modal" data-target="#exampleModal" data-id="{{$qus->id}}"  data-answer_details="{{$qus->answer_details}}">
                                 <i class="fas fa-edit"></i>
                             </a>  
                           @endif
                           
                           @if($can_delete==1)
-                            <a href="admin/delete/{{$user->id}}" class="delete btn btn-danger btn-circle ml-1 btn-sm" >
+                            <a href="questions/delete/{{$qus->id}}" class="delete btn btn-danger btn-circle ml-1 btn-sm" >
                             <i class="fas fa-trash"></i>
                           </a>
 
@@ -98,33 +105,22 @@ Danh sách
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Tạo tài khoản mới</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Thông tin bình luận</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form method="post" action="admin/edit" >
+      <form method="post" action="questions/edit" >
         @csrf
         <div class="modal-body">
           <input type="hidden" name="type" id="type">
           <input type="hidden" name="id" id="id">
+
           <div class="form-group">
-            <label for="recipient-name" class="col-form-label">Tên :</label>
-            <input type="text" class="form-control" name = "name" id="name">
+            <label for="recipient-name" class="col-form-label">Câu trả lời:</label>
+            <input type="text" class="form-control" name = "answer_details" id="answer_details">
           </div>
-          <div class="form-group">
-            <label for="message-text" class="col-form-label">Quyền:</label>
-    
-            <select class="form-control" name= "roleid" id="roleid" >
-                @foreach ($roles as $role)
-                   <option value="{{$role->id}}">{{$role->name}}</option>
-                @endforeach
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="recipient-name" class="col-form-label">Mật khẩu mới:</label>
-            <input type="text" class="form-control"  name= "password" id="password">
-          </div>
+
        </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>

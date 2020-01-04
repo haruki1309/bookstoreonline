@@ -5,37 +5,35 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-use App\Order;
-use App\User;
-
+use App\Models\Order;
+use App\Models\User;
+use App\Models\Admin;
+use App\Models\MethodDelivery;
+use App\Models\MethodPayment;
+use App\Models\Status;
+use DB;
 class OrderController extends Controller
 {
-    public function getOrder(){
-    	$waitingOrder = Order::where('status_id', 1)->get();
-    	$shippingOrder = Order::where('status_id', 2)->get();
-    	$succeedOrder = Order::where('status_id', 3)->get();
-    	$canceledOrder = Order::where('status_id', 4)->get();
-
-    	return view('admin\order\order', compact('waitingOrder', 'shippingOrder', 'succeedOrder', 'canceledOrder'));
+    public function index(Request $re){
+        $can_read = $re->can_read;
+        $can_edit = $re->can_edit;
+        $can_create = $re->can_create;
+        $can_approve = $re->can_approve;
+        $can_delete = $re->can_delete;
+        $all = Order::all();
+        $users = Admin::all();
+        $methoddeliver = MethodDelivery::all();
+        $methodpayment = MethodPayment::all();
+        $status = Status::all();
+        $viewname = 'order';
+    	return view('admin/orders/index', compact('all','can_edit','can_create','can_delete','users','methoddeliver','methodpayment','status'));
     }
 
-    public function getOrderDetail($id){
-    	
-    	$order = Order::where('id', $id)->first();
-    	return view('admin\order\order_detail', compact('order'));
-    }
-
-    public function postShipping($id){
-    	$order = Order::where('id', $id)->first();
-    	$order->status_id = 2;
-    	$order->save();
-    	return redirect('admin/orders');
-    }
-
-    public function postSucceed($id){
-    	$order = Order::where('id', $id)->first();
-    	$order->status_id = 3;
-    	$order->save();
-    	return redirect('admin/orders');
-    }
+   public function edit(Request $re){
+        $id = $re->id;
+        $status_id = $re->status_id;
+        $query = 'UPDATE `order` SET `status_id`= ? WHERE id = ? ';
+        $result = DB::update($query, [$status_id,$id]);
+        return redirect('admin/orders/')->with('message', 'Đã update'); 
+   }
 }

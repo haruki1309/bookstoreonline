@@ -38,7 +38,12 @@ Phân quyền
     </div>
     <input type="hidden" name="id_" id="id_" value="{{$role->id}}">
     <div class="card-body">
-        <div class="table-responsive">           
+        <div class="table-responsive">       
+           <div class="form-group row">
+                <label class="col-sm-1 col-form-label">Tên :</label>
+                <input type="text" class="col-sm-5 form-control" name = "name_" id="name_" value="{{$role->name}}" >
+           </div>
+          
            <table class="table table-hover">
            	 <thead class="table-primary">
      		   <tr class="table-primary">

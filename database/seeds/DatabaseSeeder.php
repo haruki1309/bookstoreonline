@@ -18,7 +18,7 @@ class DatabaseSeeder extends Seeder
             [ 
 
                 'username'=>'admin',
-                'password'=>bcrypt('admin'),
+                'password'=>bcrypt('admin'),    
                 'role_id'=>1
             ]
         ];

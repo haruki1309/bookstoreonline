@@ -325,16 +325,19 @@ values
 (4,'age','Độ tuổi'),
 (5,'topic','Chủ đề'),
 (6,'category','Thể loại'),
-(7,'admin','Nhân viên'),
-(8,'role','Phân quyền');
+(7,'orders','Đơn hàng'),
+(8,'advertiserment','Quảng cáo'),
+(9,'comments','Bình luận'),
+(10,'admin','Nhân viên'),
+(11,'role','Phân quyền');
 
 insert into role
 values
-(1,'admin'),
-(2,'user'),
-(4,'guest');
+(1,'Admin'),
+(2,'Bộ phận bán hàng'),
+(3,'Bộ phận quản lý kho');
 
 
 insert into menu_role
 values
-(8,1,1,1,1,1,1);
+(11,1,1,1,1,1,1);

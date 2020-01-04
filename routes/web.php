@@ -46,7 +46,7 @@ Route::group(['prefix'=>'admin'], function(){
 	//book route ------------------------------------------------------
 
 	Route::get('/', function(){
-		Auth::guard('admin')->attempt(['username'=>'cy','password'=>'admin']);
+		Auth::guard('admin')->attempt(['username'=>'admin','password'=>'admin']);
 		return redirect('admin\warehouse');
 	});
 
@@ -133,34 +133,30 @@ Route::group(['prefix'=>'admin'], function(){
 	Route::get('category/{id}/edit', 'Admin\CategoryController@edit');
 	Route::get('category/{id}/delete', 'Admin\CategoryController@delete');
 	
-	//user route
 	Route::get('users', 'Admin\UsersController@getUser');
-	//order route
-	Route::get('orders', 'Admin\OrderController@getOrder');
 
-	Route::get('orders/{id}', 'Admin\OrderController@getOrderDetail');
+	Route::get('orders', 'Admin\OrderController@index');
+	Route::post('orders/edit','Admin\OrderController@edit');
 
-	Route::get('orders/{id}/shipping', 'Admin\OrderController@postShipping');
-
-	Route::get('orders/{id}/succeed', 'Admin\OrderController@postSucceed');
 
 	//comment managemant route
-	Route::get('comments', 'Admin\CommentController@getCommentList');
-	Route::get('comments/accept/{id}', 'Admin\CommentController@acceptComment');
-	Route::get('comments/delete/{id}', 'Admin\CommentController@deleteComment');
+	Route::get('comments', 'Admin\CommentController@index');
+	Route::post('comments/edit', 'Admin\CommentController@edit');
+	Route::get('comments/delete/{id}', 'Admin\CommentController@delete');
+
 
 	//question route
-	Route::get('questions', 'Admin\QuestionController@getQuestionList');
-	Route::post('questions/{id}/answer', 'Admin\QuestionController@postAnswer');
-	Route::get('questions/{id}/delete', 'Admin\QuestionController@deleteQuestion');
+	Route::get('questions', 'Admin\QuestionController@index');
+	Route::post('questions/edit', 'Admin\QuestionController@edit');
+	Route::get('questions/delete/{id}', 'Admin\QuestionController@deleteQuestion');
 
 	//banner route
-	Route::get('advertiserment', 'Admin\AdvController@getIndex');
+	Route::get('advertiserment', 'Admin\AdvController@index');
 	Route::get('advertiserment/create', 'Admin\AdvController@getCreate');
 	Route::post('advertiserment/ajax-search', 'Admin\AdvController@ajaxSearch');
 	Route::post('advertiserment/create', 'Admin\AdvController@postAdvertiserment');
 	Route::get('advertiserment/edit/{id}', 'Admin\AdvController@getEdit');
-	Route::post('advertiserment/edit/{id}', 'Admin\AdvController@postEdit');
+	Route::post('advertiserment/edit/', 'Admin\AdvController@edit');
 	Route::get('advertiserment/delete/{id}', 'Admin\AdvController@getdelete');
 
 	//dashboard route

@@ -4,15 +4,19 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Book;
-use App\Advertiserment;
+use App\Models\Book;
+use App\Models\Advertiserment;
 
 class AdvController extends Controller
 {
-    public function getIndex(){
-    	$advs = Advertiserment::orderBy('endDate', 'desc')->get();
+    public function index(Request $re){
+    	$all = Advertiserment::orderBy('endDate', 'desc')->get();
+        $can_read = $re->can_read;
+        $can_edit = $re->can_edit;
+        $can_delete =$re->delete;
+        $viewname = 'quảng cáo';
 
-    	return view('admin\adv\adv_manage', compact('advs'));
+    	return view('admin\ads\index', compact('all','can_read','can_edit','can_delete'));
     }
     public function getCreate(){
     	return view('admin\adv\adv_create');
@@ -33,6 +37,16 @@ class AdvController extends Controller
     	}
 
     	return response()->json($books_arr);
+    }
+
+    public function edit(Request $request){
+        
+        if($request->type == 'edit'){
+            AdvController::postEdit($request,$request->id);
+        }else
+        if($request->type=='create'){
+            AdvController::postAdvertiserment($request,$request->id);
+        }
     }
 
     public function postAdvertiserment(Request $request){

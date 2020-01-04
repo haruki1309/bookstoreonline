@@ -48,8 +48,10 @@ class RoleController extends Controller{
 		DB::transaction(function () use ($request) {
 			$all = $request->all();
 			$id = $request->id;
-			// dd($all);
-			$query = 'Delete from menu_role where menu_role.role_id = ? ';
+			$name = $request->name_;
+			$query ='UPDATE `role` SET `name`= ?  WHERE id = ?';
+			DB::update($query, [$name,$id]);
+			$query = 'DELETE from menu_role where menu_role.role_id = ? ';
 			DB::delete($query, [$id]);
 			$query = 'INSERT INTO `menu_role` VALUES (? , ? ,? ,? , ? , ? , ?)'; 
 			$can_read= 0;
@@ -60,7 +62,7 @@ class RoleController extends Controller{
 			foreach ($request->all() as $key => $value) {
 				$pair = explode('_', $key,2);
 				if(is_numeric($pair[1])){
-					if($menu == "-1"){
+					if($menu == '-1'){
 						$menu = $pair[1];
 					}else
 					if($menu!=$pair[1]){
@@ -88,11 +90,30 @@ class RoleController extends Controller{
 					
 				}
 			}
+			if($menu!=-1)
 			DB::insert($query, [$menu,$id , $can_read, $can_edit,$can_delete,0,$can_create]);
 		},5);	
 	 return redirect('admin/role')->with('message', 'Chỉnh sửa thành công');
 
 	}	
+	public function postCreate(Request $request){
+		$role = new Role;
+		$role->name = $request->name;
+		$role->save();
+     return redirect('admin/role')->with('message', 'Thêm thành công');
+	
+	}
+
+	public function getDelete(Request $request, $id){
+		DB::transaction(function () use ($request) {
+		   $query = 'DELETE FROM `menu_role` WHERE role_id = ?';
+		   DB::delete($query, [$request->id]);
+		   $query = 'DELETE FROM `role` WHERE id= ? ';
+		   DB::delete($query,[$request->id]);
+		},5);
+	 return redirect('admin/role')->with('message', 'Chỉnh sửa thành công');
+
+	}
 }
 
 
