@@ -1,7 +1,7 @@
 @extends('admin.master')
 
 @section('title')
-Danh sách người dùng
+Bình luận về sản phẩm
 @stop
 
 @section('css')

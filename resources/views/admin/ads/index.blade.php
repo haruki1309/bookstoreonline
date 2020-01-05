@@ -1,7 +1,7 @@
 @extends('admin.master')
 
 @section('title')
-Danh sách người dùng
+Giảm giá
 @stop
 
 @section('css')

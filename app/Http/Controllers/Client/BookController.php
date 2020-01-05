@@ -15,7 +15,7 @@ class BookController extends Controller
     public function getIndex($id){
     	
     	$book = Book::where('id', $id)->first();
-        $comments = Comment::where('book_id', $id)->where('is_moderated', true)->get();
+        $comments = Comment::where(['book_id'=>$id, 'is_moderated'=>1])->get();
         $questions = QuestionAnswer::where('book_id', $id)->where('answer_details', '!=', 'null')->get();
     	return view('client\detail', compact('book', 'comments', 'questions'));
     }

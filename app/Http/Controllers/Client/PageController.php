@@ -41,16 +41,15 @@ class PageController extends Controller
     public function detail($id){
         $book = Book::find($id);
         $related = $book->Topic[0]->Book;
-        //$comments = Comment::where('book_id', $id)->where('is_moderated', true)->get();
-        $comments = Comment::where('book_id', $id)->get();
+        $comments = Comment::where('book_id', $id)->where('is_moderated', true)->get();
         $questions = QuestionAnswer::where('book_id', $id)->where('answer_details', '!=', 'null')->get();
 
         $commentsCount =($comments->count()==0) ? 1 : $comments->count();
-        $oneStars = Comment::where('book_id', $id)->where('stars', '>', '4')->get();
-        $twoStars = Comment::where('book_id', $id)->where('stars', '>', '3')->where('stars', '<=', '4')->get();
-        $threeStars = Comment::where('book_id', $id)->where('stars', '>', '2')->where('stars', '<=', '3')->get();
-        $fourStars = Comment::where('book_id', $id)->where('stars', '>', '1')->where('stars', '<=', '2')->get();
-        $fiveStars = Comment::where('book_id', $id)->where('stars', '<=', '1')->get();
+        $oneStars = Comment::where('book_id', $id)->where('is_moderated', true)->where('stars', '>', '4')->get();
+        $twoStars = Comment::where('book_id', $id)->where('is_moderated', true)->where('stars', '>', '3')->where('stars', '<=', '4')->get();
+        $threeStars = Comment::where('book_id', $id)->where('is_moderated', true)->where('stars', '>', '2')->where('stars', '<=', '3')->get();
+        $fourStars = Comment::where('book_id', $id)->where('is_moderated', true)->where('stars', '>', '1')->where('stars', '<=', '2')->get();
+        $fiveStars = Comment::where('book_id', $id)->where('is_moderated', true)->where('stars', '<=', '1')->get();
 
         $bookRate = [
                         '1star'=>round(($oneStars->count() / $commentsCount)*100, 2), 

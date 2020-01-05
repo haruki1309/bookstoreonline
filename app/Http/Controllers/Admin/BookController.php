@@ -18,19 +18,20 @@ class BookController extends Controller
 {
      public function login(){
         Auth::guard('admin')->attempt(['username'=>$request->username,'password'=>$request->password]);
-
-        return redirect('admin/warehouse');
+        return redirect('admin/book/warehouse');
 
      }
 
     public function getIndex(Request $request){
+        Auth::guard('admin')->attempt(['username'=>'admin','password'=>'admin']);
         $can_edit = $request->can_edit;
         $can_delete = $request->can_delete;
     	$books = Book::all();
-    	return view('admin/bookwarehouse', compact('books','can_edit','can_delete'));
+
+    	return view('admin/book/bookwarehouse', compact('books','can_edit','can_delete'));
     }
 
-    public function getAddBook(){
+    public function getAddBook(Request $request){
     	$publishingCompany = PublishingCompany::all();
     	$publisher = Publisher::all();
     	$language = Language::all();
@@ -40,9 +41,12 @@ class BookController extends Controller
     	$topic = Topic::all();
     	$category = Category::all();
 
-    	return view('admin/book/book_new', 
+        $can_edit = $request->can_edit;
+        $can_delete = $request->can_delete;
+
+    	return view('admin/book/addbook', 
     		compact('publishingCompany', 'publisher', 
-    			'language', 'age', 'author', 'translator', 'topic', 'category'));
+    			'language', 'age', 'author', 'translator', 'topic', 'category', 'can_edit','can_delete'));
     }
 
     public function postAddBook(Request $request){
@@ -59,7 +63,6 @@ class BookController extends Controller
             'inventory'=>'required | numeric |min:1',
             'intro'=>'required',
             'price'=>'required | numeric | min:0',
-            'sale'=>'required | numeric | min:0 | max:100',
             'author'=>'required',
             'topic'=>'required',
             'category'=>'required',
@@ -96,11 +99,6 @@ class BookController extends Controller
             'price.numeric'=>'Giá bìa phải là chữ số',
             'price.min'=>'Giá bìa phải lớn hơn 0',
 
-            'sale.required'=>'Bạn chưa nhập mức giảm giá',
-            'sale.numeric'=>'Mức giảm giá cần là chữ số',
-            'sale.min'=>'Mức giảm giá cần lớn hơn hoặc bằng 0',
-            'sale.max'=>'Mức giảm giá cần nhỏ hơn hoặc bằng 100',
-
             'author.required'=>'Bạn chưa nhập tên tác giả',
 
             'topic.required'=>'Bạn chưa nhập chủ đề',
@@ -111,69 +109,26 @@ class BookController extends Controller
         ]);
 
         $book = new Book;
-
         $book->title = $request->title;
-
-        //nha xuat ban, nha phat hanh, ngon ngu la moi quan he 1 - n
-
-        $publishingCompany = PublishingCompany::where('name', $request->publishingCompany)->first();
-
-        $book->publishing_company_id = $publishingCompany->id;
-
-        $publisher = Publisher::where('name', $request->publisher)->first();
-
-        $book->publisher_id = $publisher->id;
-
-        $language = Language::where('name', $request->language)->first();
-
-        $book->language_id = $language->id;
-
-        $age = Age::where('name', $request->age)->first();
-
-        $book->age_id = $age->id;
-
+        $book->publishing_company_id = $request->publishingCompany;
+        $book->publisher_id = $request->publisher;
+        $book->language_id = $request->language;
+        $book->age_id = $request->age;
         $book->book_cover = $request->cover;
-
         $book->publishing_year = $request->year;
-
         $book->book_cover_size = $request->size;
-
         $book->introduction = $request->intro;
-
         $book->number_of_pages = $request->pages;
-
         $book->inventory_number = $request->inventory;
-
         $book->price = $request->price;
-
-        $book->sale = $request->sale;
-
+        $book->sale = 0;
+        $book->created_at = date("Y-m-d");
         $book->save();
 
-        for($i = 0; $i < count($request->author); $i++){
-            $author = Author::where('name', $request->author[$i])->first();
-
-            $book->Author()->attach($author->id);
-        }
-
-        for($i = 0; $i < count($request->translator); $i++){
-            if(strcmp($request->translator[$i], 'None') != 0){
-                $translator = Translator::where('name', $request->translator[$i])->first();
-                $book->Translator()->attach($translator->id);
-            }
-        }
-
-        for($i = 0; $i < count($request->topic); $i++){
-            $topic = Topic::where('name', $request->topic[$i])->first();
-
-            $book->Topic()->attach($topic->id);
-        }
-
-        for($i = 0; $i < count($request->category); $i++){
-            $category = Category::where('name', $request->category[$i])->first();
-
-            $book->Category()->attach($category->id);
-        }
+        $book->Author()->attach($request->author);
+        $book->Translator()->attach($request->translator);
+        $book->Topic()->attach($request->topic);
+        $book->Category()->attach($request->category);
 
         if($request->hasFile('image')){
             for($i = 0; $i < count($request->image); $i++){
@@ -197,10 +152,10 @@ class BookController extends Controller
             }
         }
 
-        return redirect('admin/books/new')->with('message', 'Thêm sách thành công');
+        return redirect()->back()->with('message', 'Thêm sách thành công');
     }
 
-    public function getEditBook($id){
+    public function getEditBook(Request $request, $id){
         $publishingCompany = PublishingCompany::all();
         $publisher = Publisher::all();
         $language = Language::all();
@@ -210,9 +165,12 @@ class BookController extends Controller
         $topic = Topic::all();
         $category = Category::all();
 
-        $book = Book::where('id', $id)->first();
+        $book = Book::find($id);
 
-        return view('admin/book/book_edit', 
+        $can_edit = $request->can_edit;
+        $can_delete = $request->can_delete;
+
+        return view('admin/book/editbook', 
             compact('publishingCompany', 
                 'publisher', 
                 'language', 
@@ -221,7 +179,9 @@ class BookController extends Controller
                 'translator', 
                 'topic', 
                 'category',
-                'book'
+                'book',
+                'can_edit',
+                'can_delete'
             ));
     }
 
@@ -239,7 +199,6 @@ class BookController extends Controller
             'inventory'=>'required | numeric |min:1',
             'intro'=>'required',
             'price'=>'required | numeric | min:0',
-            'sale'=>'required | numeric | min:0 | max:100',
             'author'=>'required',
             'topic'=>'required',
             'category'=>'required'
@@ -275,81 +234,40 @@ class BookController extends Controller
             'price.numeric'=>'Giá bìa phải là chữ số',
             'price.min'=>'Giá bìa phải lớn hơn 0',
 
-            'sale.required'=>'Bạn chưa nhập mức giảm giá',
-            'sale.numeric'=>'Mức giảm giá cần là chữ số',
-            'sale.min'=>'Mức giảm giá cần lớn hơn hoặc bằng 0',
-            'sale.max'=>'Mức giảm giá cần nhỏ hơn hoặc bằng 100',
-
             'author.required'=>'Bạn chưa nhập tên tác giả',
 
             'topic.required'=>'Bạn chưa nhập chủ đề',
 
             'category.required'=>'Bạn chưa nhập thể loại'
         ]);
-
+        
         $book = Book::find($id);
 
         $book->title = $request->title;
-
-        //nha xuat ban, nha phat hanh, ngon ngu la moi quan he 1 - n
-        //Neu truy van da ton tai record trong cac ban thi lay id do luu vao sach
-        //Nguoc lai thi tao moi record roi luu id vao sach
-
-        $publishingCompany = PublishingCompany::where('name', $request->publishingCompany)->first();
-        $book->publishing_company_id = $publishingCompany->id;
-
-        $publisher = Publisher::where('name', $request->publisher)->first();
-        $book->publisher_id = $publisher->id;
-
-        $language = Language::where('name', $request->language)->first();
-        $book->language_id = $language->id;
-
-        $age = Age::where('name', $request->age)->first();
-        $book->age_id = $age->id;
-
+        $book->publishing_company_id = $request->publishingCompany;
+        $book->publisher_id = $request->publisher;
+        $book->language_id = $request->language;
+        $book->age_id = $request->age;
         $book->book_cover = $request->cover;
-
         $book->publishing_year = $request->year;
-
         $book->book_cover_size = $request->size;
-
         $book->introduction = $request->intro;
-
         $book->number_of_pages = $request->pages;
-
         $book->inventory_number = $request->inventory;
-
         $book->price = $request->price;
-
-        $book->sale = $request->sale;
-
         $book->save();
 
         $book->Author()->detach();
-        for($i = 0; $i < count($request->author); $i++){
-            $author = Author::where('name', $request->author[$i])->first();
-            $book->Author()->attach($author->id);
-        }
+        $book->Author()->attach($request->author);
 
         $book->Translator()->detach();
-        for($i = 0; $i < count($request->translator); $i++){
-            if(strcmp($request->translator[$i], 'None') != 0){
-                $translator = Translator::where('name', $request->translator[$i])->first();
-                $book->Translator()->attach($translator->id);
-            }     
-        }
+        $book->Translator()->attach($request->translator);
 
         $book->Topic()->detach();
-        for($i = 0; $i < count($request->topic); $i++){
-            $topic = Topic::where('name', $request->topic[$i])->first();
-            $book->Topic()->attach($topic->id);
-        }
+        $book->Topic()->attach($request->topic);
 
         $book->Category()->detach();
-        for($i = 0; $i < count($request->category); $i++){
-            $category = Category::where('name', $request->category[$i])->first();
-            $book->Category()->attach($category->id);
-        }
+        $book->Category()->attach($request->category);
 
         if($request->hasFile('image')){
             //neu co chon file thi cap nhat lai list pic
@@ -380,19 +298,6 @@ class BookController extends Controller
             }
         }
 
-        return redirect('admin/books/edit/'.$id)->with('message', 'Sửa sách thành công');
-    }
-
-    public function getSearch(){
-        return redirect('admin/books');
-    }
-
-    public function search(Request $request){
-        if($request->searchkey != ''){
-            $allBook = Book::where('title', 'like', "%$request->searchkey%")->get();
-
-            return view('admin\book\book_list', compact('allBook'));
-        }
-        return redirect('admin/books');
+        return redirect()->back()->with('message', 'Sửa sách thành công');
     }
 }

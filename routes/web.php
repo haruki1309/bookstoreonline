@@ -24,49 +24,48 @@ Route::post('/login', 'Client\LoginController@login');
 Route::get('/logout', 'Client\LoginController@logout');
 Route::post('search', 'Client\SearchController@postSearch');
 
-//cart route
+
 Route::get('/show-book-in-modal/{id}', 'Client\CartController@showBookInModal');
 Route::post('add-to-cart', 'Client\CartController@addtocart');
-Route::post('checkout/cart/update', 'Client\CartController@update');
-Route::post('checkout/cart/delete', 'Client\CartController@delete');
-Route::get('checkout/cart', 'Client\CartController@getCartView');
-//checkout
-Route::get('checkout/information', 'Client\CheckoutController@information');
-Route::post('checkout/information', 'Client\CheckoutController@storeOrder');
-
-//account
-Route::get('/account/order', 'Client\UserBoardController@getOrder');
-Route::get('/account/order/{id}/delete', 'Client\UserBoardController@deleteOrder');
-Route::get('/account/information', 'Client\UserBoardController@getAccountEdit');
-Route::post('/account/information/update', 'Client\UserBoardController@postAccountEdit');
-Route::get('/account/purcharsed-books', 'Client\UserBoardController@getPurcharsedBook');
-
 //comment
 Route::post('books/{id}/sendcomment', 'Client\BookController@postComment');
 Route::post('books/{id}/sendquestion', 'Client\BookController@postQuestion');
 
-Route::group(['prefix'=>'admin'], function(){
+Route::group(['prefix'=>'checkout', 'middleware'=>'userLogin'], function(){
+	//cart route
+	Route::post('/cart/update', 'Client\CartController@update');
+	Route::post('/cart/delete', 'Client\CartController@delete');
+	Route::get('/cart', 'Client\CartController@getCartView');
+	//checkout
+	Route::get('/information', 'Client\CheckoutController@information');
+	Route::post('/information', 'Client\CheckoutController@storeOrder');
+});
+
+Route::group(['prefix'=>'account', 'middleware'=>'userLogin'], function(){
+	//account
+	Route::get('/order', 'Client\UserBoardController@getOrder');
+	Route::get('/order/{id}/delete', 'Client\UserBoardController@deleteOrder');
+	Route::get('/information', 'Client\UserBoardController@getAccountEdit');
+	Route::post('/information/update', 'Client\UserBoardController@postAccountEdit');
+	Route::get('/purcharsed-books', 'Client\UserBoardController@getPurcharsedBook');
+});
+
+
+Route::get('admin/login', 'Admin\AdminLoginController@getIndex');
+Route::post('admin/login', 'Admin\AdminLoginController@postIndex');
+
+Route::group(['prefix'=>'admin', 'middleware'=>'adminLogin'], function(){
 	Route::get('logout', 'Admin\AdminLoginController@logout');
+	// Route::get('/', function(){
+	// 	Auth::guard('admin')->attempt(['username'=>'admin','password'=>'admin']);
+	// 	return redirect('admin\warehouse');
+	// });
 	//book route ------------------------------------------------------
-
-	Route::get('/', function(){
-		Auth::guard('admin')->attempt(['username'=>'admin','password'=>'admin']);
-		return redirect('admin\warehouse');
-	});
-
-	Route::post('book-search', 'Admin\BookController@search');
-
-	Route::get('book-search', 'Admin\BookController@getSearch');
-
 	Route::get('warehouse', 'Admin\BookController@getIndex');
-
 	Route::get('books/new', 'Admin\BookController@getAddBook');
-
 	Route::post('books/new', 'Admin\BookController@postAddBook');
-
-	Route::get('books/edit/{id}', 'Admin\BookController@getEditBook');
-
-	Route::post('books/edit/{id}', 'Admin\BookController@postEditBook');
+	Route::get('books/{id}/edit', 'Admin\BookController@getEditBook');
+	Route::post('books/{id}/edit', 'Admin\BookController@postEditBook');
 
 	//author route ------------------------------------------------------
 	Route::get('author', 'Admin\AuthorController@index');
@@ -81,37 +80,16 @@ Route::group(['prefix'=>'admin'], function(){
 	Route::get('translator/{id}/delete', 'Admin\TranslatorController@delete');
 
 	//nph route ------------------------------------------------------
-
-	Route::post('books/nph-search', 'Admin\NPHController@search');
-
-	Route::get('books/nph-search', 'Admin\NPHController@getSearch');
-
-	Route::get('books/nph/{id}', 'Admin\NPHController@getEdit');
-
-	Route::post('books/nph/{id}', 'Admin\NPHController@postEdit');
-
-	Route::get('books/nph/del/{id}', 'Admin\NPHController@delete');
-
-	Route::get('books/nph', 'Admin\NPHController@getIndex');
-
-	Route::post('books/nph', 'Admin\NPHController@postIndex');
+	Route::get('publishing-company', 'Admin\NPHController@index');
+	Route::post('publishing-company/store', 'Admin\NPHController@store');
+	Route::get('publishing-company/{id}/edit', 'Admin\NPHController@edit');
+	Route::get('publishing-company/{id}/delete', 'Admin\NPHController@delete');
 
 	//nxb route ------------------------------------------------------
-
-	Route::post('books/nxb-search', 'Admin\NXBController@search');
-
-	Route::get('books/nxb-search', 'Admin\NXBController@getSearch');
-
-	Route::get('books/nxb/{id}', 'Admin\NXBController@getEdit');
-
-	Route::post('books/nxb/{id}', 'Admin\NXBController@postEdit');
-
-	Route::get('books/nxb/del/{id}', 'Admin\NXBController@delete');
-
-	Route::get('books/nxb', 'Admin\NXBController@getIndex');
-
-	Route::post('books/nxb', 'Admin\NXBController@postIndex');
-
+	Route::get('publisher', 'Admin\NXBController@index');
+	Route::post('publisher/store', 'Admin\NXBController@store');
+	Route::get('publisher/{id}/edit', 'Admin\NXBController@edit');
+	Route::get('publisher/{id}/delete', 'Admin\NXBController@delete');
 
 	//language route ------------------------------------------------------
 	Route::get('language', 'Admin\LanguageController@index');
@@ -138,7 +116,6 @@ Route::group(['prefix'=>'admin'], function(){
 	Route::get('category/{id}/delete', 'Admin\CategoryController@delete');
 	
 	Route::get('users', 'Admin\UsersController@getUser');
-
 	Route::get('orders', 'Admin\OrderController@index');
 	Route::post('orders/edit','Admin\OrderController@edit');
 

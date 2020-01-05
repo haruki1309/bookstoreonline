@@ -1,73 +1,58 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
-
+use Redirect,Response;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-use App\Publisher;
+use App\Models\Publisher;
+use App\Models\Book;
 
 class NPHController extends Controller
 {
-    public function getIndex(Request $request){
-          $can_edit = $request->can_edit;
+    public function index(Request $request){
+        $can_edit = $request->can_edit;
         $can_delete = $request->can_delete;
         if($request->can_read==0){
            return redirect('admin/warehouse')->with('message', 'Bạn không có quyền xem'); 
         }
-    	$allNPH = Publisher::all();
-    	return view('admin\book\book_nph_list', compact('allNPH','can_edit','can_delete'));
+        $viewName = "nhà phát hành";
+        if(request()->ajax()) {
+            $publishers = Publisher::select('*');
+            
+            return datatables()->of($publishers)
+            ->addColumn('action', function($publishers){
+                $id = $publishers->id;
+                return (string)view('admin/bookinfo/action', compact('id'));
+            })
+            ->rawColumns(['action'])
+            ->addIndexColumn()
+            ->make(true);
+
+        }
+        return view('admin\bookinfo\bookinfo', compact('viewName','can_edit','can_delete'));
+    }
+      
+    public function edit($id)
+    {   
+        $where = array('id' => $id);
+        $publisher  = Publisher::where($where)->first();
+        return Response::json($publisher);
     }
 
-    public function postIndex(Request $request){
-        $this->validate($request, [
-            'value'=>'required|unique:publisher,name'
-        ], [
-            'value.required'=>'Bạn chưa nhập tên nhà phát hành',
-            'value.unique'=>'Nhà phát hành đã tồn tại'
-        ]);
-
-    	$nph = new Publisher;
-    	$nph->name = $request->value;
-    	$nph->save();
-    	return redirect('admin/books/nph')->with('message', 'Thêm nhà phát hành thành công');
-    }
-
-    public function getEdit($id){
-    	$allNPH = Publisher::all();
-    	$edit_nph = Publisher::where('id', $id)->first();
-    	return view('admin\book\book_nph_edit', compact('edit_nph', 'allNPH'));
-    }
-
-    public function postEdit(Request $request, $id){
-        $this->validate($request, [
-            'value'=>'required|unique:publisher,name'
-        ], [
-            'value.required'=>'Bạn chưa nhập tên nhà phát hành',
-            'value.unique'=>'Nhà phát hành đã tồn tại'
-        ]);
-
-    	$nph = Publisher::find($id);
-    	$nph->name = $request->value;
-    	$nph->save();
-    	return redirect('admin/books/nph');
+    public function store(Request $request)
+    {  
+        $data = Publisher::updateOrCreate(['id'=>$request->id], ['name'=>$request->name]);   
+        return Response::json($data);
     }
 
     public function delete($id){
-        $nph = Publisher::find($id);
-        $nph->delete();
+        $publisher = Publisher::where('id', '=', $id)->first();
 
-        return redirect('admin/books/nph');
-    }
-
-    public function search(Request $request){
-        if($request->searchkey != ''){
-            $allNPH = Publisher::where('name', 'like', "%$request->searchkey%")->get();
-            return view('admin\book\book_nph_list', compact('allNPH'));
+        if(count($publisher->Book) > 0){
+            return Response::json("error");
         }
-        return redirect('admin/books/nph');
-    }
-    public function getSearch(){
-        return redirect('admin/books/nph');
+        $publisher->delete();
+        return Response::json("success");  
     }
 }

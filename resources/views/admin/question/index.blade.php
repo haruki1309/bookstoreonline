@@ -1,7 +1,7 @@
 @extends('admin.master')
 
 @section('title')
-Danh sách người dùng
+Thắc mắc về sản phẩm
 @stop
 
 @section('css')
@@ -59,8 +59,7 @@ Quảng cáo
                         <th>Admin</th>
                         <th>Thời gian trả lời</th>
                         <th>Chi tiết câu trả lời</th>
-
-                        <th>  </th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>

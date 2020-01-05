@@ -29,7 +29,7 @@ Kho sách
 <div class="card shadow mb-4">
     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
         <h6 class="m-0 font-weight-bold text-primary">Dữ liệu đầu sách</h6>
-        <a href="" class="btn btn-primary btn-circle btn-sm" id="create-new">
+        <a href="{{url('admin/books/new')}}" class="btn btn-primary btn-circle btn-sm" id="create-new">
             <i class="fas fa-plus"></i>
         </a> 
     </div>
@@ -51,11 +51,11 @@ Kho sách
                         <td>{{$book->title}}</td>
                         <td>{{$book->Author[0]->name}}</td>
                         <td>{{$book->inventory_number}}</td>
-                        <td>{{$book->price.' đ'}}</td>
+                        <td>@money($book->price)</td>
                         <td>
-                        	<a href="#" class="btn btn-circle btn-sm bg-primary text-gray-100">
+                        	<a href="{{url('admin/books/'.$book->id.'/edit')}}" class="btn btn-circle btn-sm bg-primary text-gray-100">
                         		<i class="far fa-edit"></i>
-                        	</a>:
+                        	</a>
                         </td>
                     </tr>
                     @endforeach

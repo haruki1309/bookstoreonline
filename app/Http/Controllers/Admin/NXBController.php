@@ -1,73 +1,58 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
-
+use Redirect,Response;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-use App\PublishingCompany;
+use App\Models\PublishingCompany;
+use App\Models\Book;
 
 class NXBController extends Controller
 {
-    public function getIndex(Request $request){
-          $can_edit = $request->can_edit;
+    public function index(Request $request){
+        $can_edit = $request->can_edit;
         $can_delete = $request->can_delete;
         if($request->can_read==0){
            return redirect('admin/warehouse')->with('message', 'Bạn không có quyền xem'); 
         }
-    	$allNXB = PublishingCompany::all();
-    	return view('admin\book\book_nxb_list', compact('allNXB','can_edit','can_delete'));
+        $viewName = "nhà xuất bản";
+        if(request()->ajax()) {
+            $publishingCompanies = PublishingCompany::select('*');
+            
+            return datatables()->of($publishingCompanies)
+            ->addColumn('action', function($publishingCompanies){
+                $id = $publishingCompanies->id;
+                return (string)view('admin/bookinfo/action', compact('id'));
+            })
+            ->rawColumns(['action'])
+            ->addIndexColumn()
+            ->make(true);
+
+        }
+        return view('admin\bookinfo\bookinfo', compact('viewName','can_edit','can_delete'));
+    }
+      
+    public function edit($id)
+    {   
+        $where = array('id' => $id);
+        $publishingCompany  = PublishingCompany::where($where)->first();
+        return Response::json($publishingCompany);
     }
 
-    public function postIndex(Request $request){
-        $this->validate($request, [
-            'value'=>'required|unique:publishing_company,name'
-        ], [
-            'value.required'=>'Bạn chưa nhập tên nhà xuất bản',
-            'value.unique'=>'Nhà xuất bản đã tồn tại'
-        ]);
-
-    	$nxb = new PublishingCompany;
-    	$nxb->name = $request->value;
-    	$nxb->save();
-    	return redirect('admin/books/nxb')->with('message', 'Thêm nhà xuất bản thành công');
-    }
-
-    public function getEdit($id){
-    	$allNXB = PublishingCompany::all();
-    	$edit_nxb = PublishingCompany::where('id', $id)->first();
-    	return view('admin\book\book_nxb_edit', compact('edit_nxb', 'allNXB'));
-    }
-
-    public function postEdit(Request $request, $id){
-        $this->validate($request, [
-            'value'=>'required|unique:publishing_company,name'
-        ], [
-            'value.required'=>'Bạn chưa nhập tên nhà xuất bản',
-            'value.unique'=>'Nhà xuất bản đã tồn tại'
-        ]);
-
-    	$nxb = PublishingCompany::find($id);
-    	$nxb->name = $request->value;
-    	$nxb->save();
-    	return redirect('admin/books/nxb');
+    public function store(Request $request)
+    {  
+        $data = PublishingCompany::updateOrCreate(['id'=>$request->id], ['name'=>$request->name]);   
+        return Response::json($data);
     }
 
     public function delete($id){
-        $nxb = PublishingCompany::find($id);
-        $nxb->delete();
+        $publishingCompany = PublishingCompany::where('id', '=', $id)->first();
 
-        return redirect('admin/books/nxb');
-    }
-
-    public function search(Request $request){
-        if($request->searchkey != ''){
-            $allNXB = PublishingCompany::where('name', 'like', "%$request->searchkey%")->get();
-            return view('admin\book\book_nxb_list', compact('allNXB'));
+        if(count($publishingCompany->Book) > 0){
+            return Response::json("error");
         }
-        return redirect('admin/books/nxb');
-    }
-    public function getSearch(){
-        return redirect('admin/books/nxb');
+        $publishingCompany->delete();
+        return Response::json("success");  
     }
 }

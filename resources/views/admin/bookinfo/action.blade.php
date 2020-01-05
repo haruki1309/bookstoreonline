@@ -11,7 +11,7 @@
     var can_delete = $("#iscandelete").val();
     if(can_edit==0){
         $("#btedit{{$id}}").attr('disabled', true);
-   }
+    }
     if(can_delete==0){
         $("#delete-row{{$id}}").attr('disabled', true);
     }

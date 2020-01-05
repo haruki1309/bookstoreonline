@@ -1,7 +1,7 @@
 @extends('admin.master')
 
 @section('title')
-Danh sách người dùng
+Đơn đặt hàng
 @stop
 
 @section('css')
@@ -23,7 +23,7 @@ Danh sách người dùng
 
 
 <script type="text/javascript">
-    $('#exampleModal').on('show.bs.modal', function (event) {
+  $('#exampleModal').on('show.bs.modal', function (event) {
   var button = $(event.relatedTarget) // Button that triggered the modal
   var id = button.data('id') 
   var user_id = button.data('user_id') 

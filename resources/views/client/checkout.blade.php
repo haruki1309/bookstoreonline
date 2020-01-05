@@ -105,7 +105,7 @@ Cửa hàng sách
                             </div>
                             <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
                                 <div class="panel-body">
-                                    @if($userAddress->count() > 0)
+                                    @if($userAddress->count() > 1)
                                     <div class="payment-met no-padding">
                                         @foreach($userAddress as $index => $item)
                                         <div class="input-group">
@@ -126,7 +126,7 @@ Cửa hàng sách
                                             <label for="ship-box">Giao đến địa chỉ khác</label>
                                         </div>
                                     </div>
-                                    <div class="different-address no-padding">
+                                    <div class="no-padding">
                                         <div id="ship-box-information" class="row"> 
                                             <div class="col-md-6">
                                                 <p class="form-row">
@@ -146,23 +146,23 @@ Cửa hàng sách
                                         </div>
                                     </div> 
                                     @else
-                                    <div class="different-address no-padding">
-                                        <div id="ship-box-info" class="row"> 
+                                    <div class="no-padding">
+                                        <div id="ship-box" class="row"> 
                                             <div class="col-md-6">
                                                 <p class="form-row">
-                                                    <input type="text" placeholder="Họ tên *">
+                                                    <input name="receiverName" type="text" placeholder="Họ tên *">
                                                 </p>
                                             </div>  
                                             <div class="col-md-6">
                                                 <p class="form-row">
-                                                    <input type="text" placeholder="Số điện thoại *">
+                                                    <input name="receiverPhone" type="text" placeholder="Số điện thoại *">
                                                 </p>
                                             </div>  
                                             <div class="col-md-12">
                                                 <p class="form-row">
-                                                    <input type="text" placeholder="Địa chỉ *">
+                                                    <input name="receiverAddress" type="text" placeholder="Địa chỉ *">
                                                 </p>
-                                            </div>                                 
+                                            </div>                               
                                         </div>
                                     </div> 
                                     @endif
