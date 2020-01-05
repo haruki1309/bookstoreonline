@@ -84,26 +84,26 @@
             </div>
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link" href="{{url('admin/orders')}}">
                 <i class="fas fa-fw fa-folder"></i>
                 <span>Đơn hàng</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link" href="{{url('admin/advertiserment')}}">
                 <i class="fas fa-fw fa-folder"></i>
                 <span>Quảng cáo</span>
                 </a>
             </li>
             <!-- Nav Item - Charts -->
             <li class="nav-item">
-                <a class="nav-link" href="charts.html">
+                <a class="nav-link" href="{{url('admin/comments')}}">
                 <i class="fas fa-fw fa-chart-area"></i>
                 <span>Bình luận</span></a>
             </li>
             <!-- Nav Item - Tables -->
             <li class="nav-item">
-                <a class="nav-link" href="tables.html">
+                <a class="nav-link" href="{{url('admin/questions')}}">
                 <i class="fas fa-fw fa-table"></i>
                 <span>Câu hỏi</span></a>
             </li>
@@ -115,9 +115,15 @@
             </div>
 
             <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link" href="{{url('admin/admin')}}">
                 <i class="fas fa-fw fa-folder"></i>
-                <span>Danh sách nhân viên</span>
+                <span>Nhân viên</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{url('admin/role')}}">
+                <i class="fas fa-fw fa-folder"></i>
+                <span>Phân quyền</span>
                 </a>
             </li>
 
@@ -359,7 +365,21 @@
     <!-- Core plugin JavaScript-->
     <script src="{{url('vendor/jquery-easing/jquery.easing.min.js')}}"></script>
     <!-- Custom scripts for all pages-->
-    <script src="{{url('js/admin/sb-admin-2.min.js')}}"></script>
+    <script src="{{url('js/admin/sb-admin-2.min.js')}}"></script>  
+
+    <script>
+        $( document ).ready(function() {
+            var msg = '{{Session::get('message')}}';
+            var exist = '{{Session::has('message')}}';
+            if(exist){
+              alert(msg);
+            }      
+        });
+    </script>
+
+    <input type="hidden" name="iscanedit" id="iscanedit" value="{{$can_edit}}">
+    <input type="hidden" name="iscandelete" id="iscandelete" value="{{$can_delete}}">
+
     @section('js')
     @show
 </body>

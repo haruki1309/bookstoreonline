@@ -1,6 +1,6 @@
 <?php
 namespace App\Http\Controllers\Admin;
-
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Book;
@@ -16,10 +16,18 @@ use App\Models\Picture;
 
 class BookController extends Controller
 {
-    public function getIndex(){ 	
-    	$books = Book::all();
+     public function login(){
+        Auth::guard('admin')->attempt(['username'=>$request->username,'password'=>$request->password]);
 
-    	return view('admin/bookwarehouse', compact('books'));
+        return redirect('admin/warehouse');
+
+     }
+
+    public function getIndex(Request $request){
+        $can_edit = $request->can_edit;
+        $can_delete = $request->can_delete;
+    	$books = Book::all();
+    	return view('admin/bookwarehouse', compact('books','can_edit','can_delete'));
     }
 
     public function getAddBook(){

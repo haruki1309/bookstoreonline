@@ -55,7 +55,7 @@ Kho sách
                         <td>
                         	<a href="#" class="btn btn-circle btn-sm bg-primary text-gray-100">
                         		<i class="far fa-edit"></i>
-                        	</a>
+                        	</a>:
                         </td>
                     </tr>
                     @endforeach

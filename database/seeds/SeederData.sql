@@ -316,3 +316,28 @@ insert into book_supplier
 values
 (1, 1, 50000),
 (2, 2, 52000);
+
+insert into menu 
+values
+(1,'author','Tác giả'),
+(2,'translator','Dịch giả'),
+(3,'language','Ngôn ngữ'),
+(4,'age','Độ tuổi'),
+(5,'topic','Chủ đề'),
+(6,'category','Thể loại'),
+(7,'orders','Đơn hàng'),
+(8,'advertiserment','Quảng cáo'),
+(9,'comments','Bình luận'),
+(10,'admin','Nhân viên'),
+(11,'role','Phân quyền');
+
+insert into role
+values
+(1,'Admin'),
+(2,'Bộ phận bán hàng'),
+(3,'Bộ phận quản lý kho');
+
+
+insert into menu_role
+values
+(11,1,1,1,1,1,1);

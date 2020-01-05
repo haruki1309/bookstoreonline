@@ -10,7 +10,12 @@ use App\Models\Book;
 
 class CategoryController extends Controller
 {
-    public function index(){
+    public function index(Request $request){
+          $can_edit = $request->can_edit;
+        $can_delete = $request->can_delete;
+        if($request->can_read==0){
+           return redirect('admin/warehouse')->with('message', 'Bạn không có quyền xem'); 
+        }
         $viewName = "thể loại";
         if(request()->ajax()) {
             $categories = Category::select('*');
@@ -25,7 +30,7 @@ class CategoryController extends Controller
             ->make(true);
 
         }
-        return view('admin\bookinfo\bookinfo', compact('viewName'));
+        return view('admin\bookinfo\bookinfo', compact('viewName','can_edit','can_delete'));
     }
       
     public function edit($id)

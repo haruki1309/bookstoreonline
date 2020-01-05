@@ -17,7 +17,7 @@
 @stop
 
 @section('pageheader')
-{{'Thông tin '.$viewName}}
+{{'Thông tin '.$viewName}} 
 @stop
 
 @section('content')

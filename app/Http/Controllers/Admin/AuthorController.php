@@ -10,11 +10,16 @@ use App\Models\Book;
 
 class AuthorController extends Controller
 {
-    public function index(){
+    public function index(Request $re){
         $viewName = "tác giả";
+        $can_edit = $re->can_edit;
+        $can_delete = $re->can_delete;
+        if($re->can_read==0){
+           return redirect('admin/warehouse')->with('message', 'Bạn không có quyền xem'); 
+        }
     	if(request()->ajax()) {
             $authors = Author::select('*');
-
+                
             return datatables()->of($authors)
             ->addColumn('action', function($authors){
                 $id = $authors->id;
@@ -24,11 +29,12 @@ class AuthorController extends Controller
             ->addIndexColumn()
             ->make(true);
         }
-    	return view('admin\bookinfo\bookinfo', compact('viewName'));
+    	return view('admin\bookinfo\bookinfo', compact('viewName','can_edit','can_delete'));
     }
       
-    public function edit($id)
+    public function edit( $id)
     {   
+      
         $where = array('id' => $id);
         $author  = Author::where($where)->first();
         return Response::json($author);
@@ -40,7 +46,10 @@ class AuthorController extends Controller
         return Response::json($data);
     }
 
-    public function delete($id){
+    public function delete($id,Request $re){
+        if($re->can_read==0){
+           return redirect('admin/author')->with('message', 'Bạn không có quyền xóa'); 
+        }
         $author = Author::where('id', '=', $id)->first();
 
         if(count($author->Book) > 0){

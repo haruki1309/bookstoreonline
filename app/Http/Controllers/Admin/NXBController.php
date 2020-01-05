@@ -9,9 +9,14 @@ use App\PublishingCompany;
 
 class NXBController extends Controller
 {
-    public function getIndex(){
+    public function getIndex(Request $request){
+          $can_edit = $request->can_edit;
+        $can_delete = $request->can_delete;
+        if($request->can_read==0){
+           return redirect('admin/warehouse')->with('message', 'Bạn không có quyền xem'); 
+        }
     	$allNXB = PublishingCompany::all();
-    	return view('admin\book\book_nxb_list', compact('allNXB'));
+    	return view('admin\book\book_nxb_list', compact('allNXB','can_edit','can_delete'));
     }
 
     public function postIndex(Request $request){

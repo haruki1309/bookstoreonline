@@ -9,9 +9,14 @@ use App\Publisher;
 
 class NPHController extends Controller
 {
-    public function getIndex(){
+    public function getIndex(Request $request){
+          $can_edit = $request->can_edit;
+        $can_delete = $request->can_delete;
+        if($request->can_read==0){
+           return redirect('admin/warehouse')->with('message', 'Bạn không có quyền xem'); 
+        }
     	$allNPH = Publisher::all();
-    	return view('admin\book\book_nph_list', compact('allNPH'));
+    	return view('admin\book\book_nph_list', compact('allNPH','can_edit','can_delete'));
     }
 
     public function postIndex(Request $request){

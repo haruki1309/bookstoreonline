@@ -16,9 +16,10 @@ class DatabaseSeeder extends Seeder
         DB::unprepared(file_get_contents($path));
         $admin = [
             [ 
-                'username'=>'admin',
-                'password'=>bcrypt('admin')
 
+                'username'=>'admin',
+                'password'=>bcrypt('admin'),    
+                'role_id'=>1
             ]
         ];
         DB::table('admin')->insert($admin);
