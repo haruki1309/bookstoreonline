@@ -87,7 +87,7 @@ Cửa hàng sách
             <div class="col-md-4">
                 <div class="subtotal-main-area">
                     <div class="subtotal-area">
-                        <h2>Tổng<span class="total-price">{{Cart::total().'đ'}}</span></h2>
+                        <h2>Tổng<span class="total-price">@money((float)Cart::total(2, ',', ''))</span></h2>
                     </div>
                     <a href="{{url('checkout/information')}}">Thanh toán</a>
                     <p></p>

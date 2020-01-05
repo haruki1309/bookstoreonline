@@ -20,7 +20,7 @@ class CartController extends Controller
 
         if($request->qty <= $book->inventory_number){
             $user = Auth::user();
-            $price = $book->price * (1 - $book->sale/100);
+            $price = $book->price * (1 - $book->sale/100); //sale-off
             Cart::restore($user->id);
             Cart::add([
                 'id'=>$book->id, 

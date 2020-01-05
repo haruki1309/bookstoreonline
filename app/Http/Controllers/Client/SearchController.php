@@ -20,39 +20,21 @@ use App\Models\Advertiserment;
 class SearchController extends Controller
 {
     public function postSearch(Request $request){
-    	$key = $request->searchField;
+    	$key = $request->searchkey;
 
-    	$viewName = 'Kết quả tìm kiếm: '.$key;
+    	$viewname = 'Kết quả tìm kiếm: '.$key;
 
     	if($key == ''){
     		//reload current page
     		return redirect()->back();
     	}
 
-    	$book = Book::where('title', 'like', "%$key%")->get();
+    	$books = Book::where('title', 'like', "%$key%")->get();
         $authors = Author::where('name', 'like', "%$key%")->get();
         $publishers = Publisher::where('name', 'like', "%$key%")->get();
         $publishingComs = PublishingCompany::where('name', 'like', "%$key%")->get();
 
-        // if(count($authors) > 0){
-        //     foreach ($authors as $author) {
-        //         $book = array_merge($book->toArray(), $author->Book->toArray());
-        //     }
-        // }
-
-        // if(count($publishers) > 0){
-        //     foreach ($publishers as $publisher) {
-        //         $book = array_merge($book->toArray(), $publisher->Book->toArray());
-        //     }
-        // }
-
-        // if(count($publishingComs) > 0){
-        //     foreach ($publishingComs as $publishingCom) {
-        //         $book = array_merge($book->toArray(), $publishingCom->Book->toArray());
-        //     }
-        // }
-
-        return view('client\result', compact('viewName', 'book'));
+        return view('client\list', compact('viewname', 'books'));
     }
 
     public function getSearch(){

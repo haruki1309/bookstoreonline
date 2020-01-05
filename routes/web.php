@@ -16,32 +16,35 @@ use App\User;
 Route::get('/homepage', 'Client\PageController@homepage');
 Route::get('/shop', 'Client\PageController@shop');
 Route::get('/checkout', 'Client\PageController@checkout');
-Route::get('/account', 'Client\PageController@account');
 Route::get('/books/{id}', 'Client\PageController@detail');
 Route::get('/signin', 'Client\LoginController@getSigninPage');
+Route::post('/signin', 'Client\SigninController@postSignin');
+Route::post('/signin/check-email', 'Client\SigninController@checkEmailExisted');
 Route::post('/login', 'Client\LoginController@login');
 Route::get('/logout', 'Client\LoginController@logout');
+Route::post('search', 'Client\SearchController@postSearch');
 
 //cart route
+Route::get('/show-book-in-modal/{id}', 'Client\CartController@showBookInModal');
 Route::post('add-to-cart', 'Client\CartController@addtocart');
 Route::post('checkout/cart/update', 'Client\CartController@update');
 Route::post('checkout/cart/delete', 'Client\CartController@delete');
 Route::get('checkout/cart', 'Client\CartController@getCartView');
 //checkout
 Route::get('checkout/information', 'Client\CheckoutController@information');
+Route::post('checkout/information', 'Client\CheckoutController@storeOrder');
 
-Route::get('/show-book-in-modal/{id}', 'Client\CartController@showBookInModal');
+//account
+Route::get('/account/order', 'Client\UserBoardController@getOrder');
+Route::get('/account/order/{id}/delete', 'Client\UserBoardController@deleteOrder');
+Route::get('/account/information', 'Client\UserBoardController@getAccountEdit');
+Route::post('/account/information/update', 'Client\UserBoardController@postAccountEdit');
+Route::get('/account/purcharsed-books', 'Client\UserBoardController@getPurcharsedBook');
 
-Route::get('/cart-test', function(){
-	// Cart::destroy();
-	//Cart::restore('1');
-	//dd(User::get());
-	//$book = Cart::content()->where('id', 7)->first();
-	dd(Cart::content());
-	//Cart::store(1);
-});
+//comment
+Route::post('books/{id}/sendcomment', 'Client\BookController@postComment');
+Route::post('books/{id}/sendquestion', 'Client\BookController@postQuestion');
 
-Route::get('{object}/{id}', 'Client\SearchController@searchByObject');
 Route::group(['prefix'=>'admin'], function(){
 	Route::get('logout', 'Admin\AdminLoginController@logout');
 	//book route ------------------------------------------------------
@@ -177,3 +180,15 @@ Route::group(['prefix'=>'admin'], function(){
 	Route::post('goods-receipt-order/create/map-table', 'Admin\GoodsReceiptOrderController@mapTable');
 	Route::post('goods-receipt-order/create/add-list', 'Admin\GoodsReceiptOrderController@addList');
 });
+
+
+Route::get('/cart-test', function(){
+	// Cart::destroy();
+	//Cart::restore('1');
+	//dd(User::get());
+	//$book = Cart::content()->where('id', 7)->first();
+	dd(Cart::content());
+	//Cart::store(1);
+});
+
+Route::get('{object}/{id}', 'Client\SearchController@searchByObject');

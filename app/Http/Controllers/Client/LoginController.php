@@ -12,8 +12,17 @@ use Cart;
 
 class LoginController extends Controller
 {
-    public function index(){
-        return view('client/login');    
+    public function getSigninPage(){
+        return view('client/signin');    
+    }
+
+    public function postSignin(Request $request){
+        dd($request);
+        $user = new User;
+        $user->name = $request->name;
+        $user->phone = $request->phone;
+        $user->email = $request->email;
+        $user->name = $request->name;
     }
 
     public function login(Request $request){
@@ -28,36 +37,6 @@ class LoginController extends Controller
         }
     }
 
-    public function postLogin(Request $request){
-    	if(Auth::attempt( ['email'=>$request->email, 'password'=>$request->password])){
-    		$user = Auth::user();
-
-    		Cart::restore($user->id);
-
-            if($request->bookID > -1){
-                $book = Book::where('id', $request->bookID)->first();
-                $price = $book->price * (1 - $book->sale/100);
-
-                Cart::add([
-                    'id'=>$book->id, 
-                    'name'=>$book->title, 
-                    'qty'=>$request->bookQty, 
-                    'price'=>$price, 
-                    'weight'=>1,
-                    'options'=>[
-                        'oldprice'=>$book->price,
-                        'sale'=>$book->sale,
-                        'img'=>$book->Picture[0]->link,
-                        'authors'=>$book->Author
-                    ]]);
-            }
-
-    		return redirect()->back()->with('user', $user);
-    	}
-    	else{
-    		return redirect()->back();
-    	}
-    }
     public function logout(){
         $user = Auth::user();
         Cart::restore($user->id);
@@ -66,6 +45,6 @@ class LoginController extends Controller
         foreach(Cart::content() as $item){
             Cart::remove($item->rowId);
         }
-        return redirect()->back();
+        return redirect('homepage');
     }
 }

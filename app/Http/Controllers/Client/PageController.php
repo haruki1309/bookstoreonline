@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Book;
+use App\Models\Comment;
+use App\Models\QuestionAnswer;
 use App\Models\Author;
 use App\Models\Translator;
 use App\Models\PublishingCompany;
@@ -39,7 +41,26 @@ class PageController extends Controller
     public function detail($id){
         $book = Book::find($id);
         $related = $book->Topic[0]->Book;
-        return view('client/bookdetail', compact('book', 'related'));
+        //$comments = Comment::where('book_id', $id)->where('is_moderated', true)->get();
+        $comments = Comment::where('book_id', $id)->get();
+        $questions = QuestionAnswer::where('book_id', $id)->where('answer_details', '!=', 'null')->get();
+
+        $commentsCount =($comments->count()==0) ? 1 : $comments->count();
+        $oneStars = Comment::where('book_id', $id)->where('stars', '>', '4')->get();
+        $twoStars = Comment::where('book_id', $id)->where('stars', '>', '3')->where('stars', '<=', '4')->get();
+        $threeStars = Comment::where('book_id', $id)->where('stars', '>', '2')->where('stars', '<=', '3')->get();
+        $fourStars = Comment::where('book_id', $id)->where('stars', '>', '1')->where('stars', '<=', '2')->get();
+        $fiveStars = Comment::where('book_id', $id)->where('stars', '<=', '1')->get();
+
+        $bookRate = [
+                        '1star'=>round(($oneStars->count() / $commentsCount)*100, 2), 
+                        '2star'=>round(($twoStars->count() / $commentsCount)*100, 2), 
+                        '3star'=>round(($threeStars->count() / $commentsCount)*100, 2),
+                        '4star'=>round(($fourStars->count() / $commentsCount)*100, 2),
+                        '5star'=>round(($fiveStars->count() / $commentsCount)*100, 2)
+                    ];
+
+        return view('client/bookdetail', compact('book', 'related', 'comments', 'questions', 'bookRate'));
     }
 
     public function getIndex(){

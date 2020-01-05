@@ -23,4 +23,7 @@ class Order extends Model
     public function MethodDelivery(){
         return $this->belongsTo('App\Models\MethodDelivery');
     }
+    public function MethodPayment(){
+        return $this->belongsTo('App\Models\MethodPayment');
+    }
 }

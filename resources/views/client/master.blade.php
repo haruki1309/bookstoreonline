@@ -26,6 +26,7 @@
     <!-- meanmenu css -->
     <link rel="stylesheet" href="{{url('css/client/meanmenu.min.css')}}">
     <!-- Font-Awesome css -->
+    <link href="{{url('vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="{{url('css/client/font-awesome.min.css')}}">
     <!-- pe-icon-7-stroke css -->
     <link rel="stylesheet" href="{{url('css/client/pe-icon-7-stroke.css')}}">
@@ -42,6 +43,8 @@
     <link rel="stylesheet" href="{{url('css/client/style.css')}}">
     <!-- responsive css -->
     <link rel="stylesheet" href="{{url('css/client/responsive.css')}}">
+
+    
     @section('css')
     @show
     <script src="{{url('js/client/modernizr-2.8.3.min.js')}}"></script>
@@ -64,8 +67,10 @@
                     <div class="header-right">
                         <ul>
                             @if(Auth::check())
-                            <li>
-                                <a href="{{url('account')}}"><i class="flaticon-people"></i></a>
+                            <li class="shoping-cart">
+                                <a href="javascript:void(0)"><i class="flaticon-people"></i></a>
+                                <div class="add-to-cart-product">
+                                </div>
                             </li>
                             <li class="shoping-cart">
                                 <a href="#">
@@ -140,8 +145,26 @@
                     <div class="header-right">
                         <ul>
                             @if(Auth::check())
-                            <li>
-                                <a href="{{url('account')}}"><i class="flaticon-people"></i></a>
+                            <li class="shoping-cart">
+                                <a href="javascript:void(0)"><i class="flaticon-people"></i></a>
+                                <div class="add-to-cart-product">
+                                    <div class="cart-product">
+                                        <div class="cart-product-info">
+                                            <a href="{{url('account/information')}}" class="account-menu">
+                                                <i class="fas fa-user"></i> Tài khoản của tôi
+                                            </a>
+                                            <a href="{{url('account/order')}}" class="account-menu">
+                                                <i class="fas fa-file-invoice"></i>Đơn hàng của tôi
+                                            </a>
+                                            <a href="{{url('account/purcharsed-books')}}" class="account-menu">
+                                                <i class="fas fa-book"></i>Sách đã mua
+                                            </a>
+                                            <a href="{{url('logout')}}" class="account-menu">
+                                                <i class="fas fa-sign-out-alt"></i>Đăng xuất
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
                             </li>
                             <li class="shoping-cart">
                                 <a href="#">
@@ -246,7 +269,7 @@
                     </form>
                     <div style="font-size: 13px;">
                         Chưa có tài khoản? 
-                        <a href="" style="color: #32b5f3;">Đăng kí ngay</a>
+                        <a href="{{url('signin')}}" style="color: #32b5f3;">Đăng kí ngay</a>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -389,6 +412,14 @@
     </footer>
     <!-- Footer Area End -->
     
+
+    <div class="search-container">
+        <form action="{{url('search')}}" method="post" autocomplete="off">
+            <input type="hidden" name="_token" value="{{csrf_token()}}">
+            <input type="text" placeholder="Tìm kiếm..." name="searchkey">
+            <div class="search"></div>
+        </form>
+    </div>
     <!-- all js here -->
     
     <!-- jquery latest version -->
@@ -421,9 +452,11 @@
     <script src="{{url('js/client/plugins.js')}}"></script>
     <!-- Nivo slider js -->
     <script src="{{url('js/client/jquery/jquery.nivo.slider.js')}}" type="text/javascript"></script>
+    <script src="{{url('js/client/jquery/jquery.validate.js')}}"></script>
     <script src="{{url('js/client/home.js')}}" type="text/javascript"></script>
     <!-- main js -->
     <script src="{{url('js/client/main.js')}}"></script>
+
     @section('js')
     @show
 </body>

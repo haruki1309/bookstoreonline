@@ -5,9 +5,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-use App\Book;
-use App\QuestionAnswer;
-use App\Comment;
+use App\Models\Book;
+use App\Models\QuestionAnswer;
+use App\Models\Comment;
 
 
 class BookController extends Controller
@@ -17,7 +17,6 @@ class BookController extends Controller
     	$book = Book::where('id', $id)->first();
         $comments = Comment::where('book_id', $id)->where('is_moderated', true)->get();
         $questions = QuestionAnswer::where('book_id', $id)->where('answer_details', '!=', 'null')->get();
-
     	return view('client\detail', compact('book', 'comments', 'questions'));
     }
 
@@ -40,7 +39,7 @@ class BookController extends Controller
 
         $comment->user_id = Auth::user()->id;
         $comment->book_id = $id;
-        $comment->stars = $request->starCount;
+        $comment->stars = $request->commentRating;
         $comment->title = $request->commentTitle;
         $comment->comment = $request->commentContent;
         $comment->created_at = date('Y/m/d');

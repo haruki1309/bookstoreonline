@@ -5,11 +5,16 @@ Trang chủ
 @stop
 
 @section('css')
+<link rel="stylesheet" type="text/css" href="{{url('vendor/boostrap-star-rating/star-rating.css')}}">
 @stop
 
 @section('js')
 <script type="text/javascript" src="{{url('js/client/bookreviewmodal.js')}}"></script>
 <script type="text/javascript" src="{{url('js/client/cart.js')}}"></script>
+<script type="text/javascript" src="{{url('vendor/boostrap-star-rating/star-rating.js')}}"></script>
+<script type="text/javascript">
+    $('.bookrating').rating({displayOnly: true, step: 0.5});
+</script>
 @stop
 
 @section('content')
@@ -188,15 +193,17 @@ Trang chủ
                                     <div class="product-wrapper">
                                         <a href="javascript:void(0)" class="single-banner-image-wrapper">
                                             <img alt="" src="{{url('1234_db_img/'.$books[2*$i]->Picture[0]->link)}}">
-                                            <div class="price">@money($books[2*$i]->price)</div>
+                                            @if($books[2*$i]->sale > 0)
+                                            <div class="price">
+                                                {{'-'.$books[2*$i]->sale.'%'}}
+                                            </div>
+                                            <div class="price-triangle"></div>
+                                            @endif
                                         </a>
                                         <div class="product-description" data-bookid="{{$books[2*$i]->id}}">
                                             <div class="functional-buttons">
                                                 <a href="javascript:void(0)" class="btn-add-to-cart" data-bookid="{{$books[2*$i]->id}}" title="Add to Cart">
                                                     <i class="fa fa-shopping-cart"></i>
-                                                </a>
-                                                <a href="javascript:void(0)" title="Add to Wishlist">
-                                                    <i class="fa fa-heart-o"></i>
                                                 </a>
                                                 <a href="javascript:void(0)" title="Quick view" class="viewProductModal">
                                                     <i class="fa fa-compress"></i>
@@ -206,13 +213,17 @@ Trang chủ
                                     </div>
                                     <div class="banner-bottom text-center">
                                         <div class="rating-icon">
-                                            <i class="fa fa-star icolor"></i>
-                                            <i class="fa fa-star icolor"></i>
-                                            <i class="fa fa-star icolor"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
+                                            <input class="rating-loading bookrating" value="{{$books[2*$i]->rating}}" data-size="xs">
                                         </div>
                                         <a href="{{url('books/'.$books[2*$i]->id)}}">{{$books[2*$i]->title}}</a>
+                                        <div class="row">
+                                            @if($books[2*$i]->sale == 0)
+                                            <div class="new-price">@money($books[2*$i]->price)</div>  
+                                            @else
+                                            <div class="new-price col-sm-6">@money($books[2*$i]->price * (100 - $books[2*$i]->sale)/100)</div>
+                                            <div class="old-price col-sm-6">@money($books[2*$i]->price)</div>  
+                                            @endif  
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -222,15 +233,17 @@ Trang chủ
                                     <div class="product-wrapper">
                                         <a href="javascript:void(0)" class="single-banner-image-wrapper">
                                             <img alt="" src="{{url('1234_db_img/'.$books[2*$i + 1]->Picture[0]->link)}}">
-                                            <div class="price">@money($books[2*$i + 1]->price)</div>
+                                            @if($books[2*$i+1]->sale > 0)
+                                            <div class="price">
+                                                {{'-'.$books[2*$i+1]->sale.'%'}}
+                                            </div>
+                                            <div class="price-triangle"></div>
+                                            @endif
                                         </a>
                                         <div class="product-description" data-bookid="{{$books[2*$i+1]->id}}">
                                             <div class="functional-buttons">
-                                                <a href="javascript:void(0)" class="btn-add-to-cart" data-bookid="{{$books[2*$i]->id}}" title="Add to Cart">
+                                                <a href="javascript:void(0)" class="btn-add-to-cart" data-bookid="{{$books[2*$i+1]->id}}" title="Add to Cart">
                                                     <i class="fa fa-shopping-cart"></i>
-                                                </a>
-                                                <a href="javascript:void(0)" title="Add to Wishlist">
-                                                    <i class="fa fa-heart-o"></i>
                                                 </a>
                                                 <a href="javascript:void(0)" title="Quick view" data-toggle="modal" data-target="#productModal" class="viewProductModal">
                                                     <i class="fa fa-compress"></i>
@@ -240,13 +253,17 @@ Trang chủ
                                     </div>
                                     <div class="banner-bottom text-center">
                                         <div class="rating-icon">
-                                            <i class="fa fa-star icolor"></i>
-                                            <i class="fa fa-star icolor"></i>
-                                            <i class="fa fa-star icolor"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
+                                            <input class="rating-loading bookrating" value="{{$books[2*$i+1]->rating}}" data-size="xs">
                                         </div>
-                                        <a href="{{url('books/'.$books[2*$i + 1]->id)}}">{{$books[2*$i + 1]->title}}</a>
+                                        <a href="{{url('books/'.$books[2*$i+1]->id)}}">{{$books[2*$i + 1]->title}}</a>
+                                       <div class="row">
+                                            @if($books[2*$i+1]->sale == 0)
+                                            <div class="new-price">@money($books[2*$i+1]->price)</div>  
+                                            @else
+                                            <div class="new-price col-sm-6">@money($books[2*$i+1]->price * (100 - $books[2*$i+1]->sale)/100)</div>
+                                            <div class="old-price col-sm-6">@money($books[2*$i+1]->price)</div>  
+                                            @endif  
+                                        </div>
                                     </div>
                                 </div>
                             </div>

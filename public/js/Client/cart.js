@@ -6,7 +6,7 @@ $(document).ready(function(){
     });
 
     Number.prototype.moneyformat = function() {
-        return this.toFixed(2).replace('.', ',').replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.') + "đ";
+        return this.toFixed(2).replace('.', ',').replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.') + " VNĐ";
     };
 
     var addBookToCart = function(_bookID, _qty){
@@ -26,7 +26,7 @@ $(document).ready(function(){
     };
 
     $('.btn-add-to-cart-modal').click(function(){
-        var count = $('#french-hens').val();
+        var count = $(this).parent().find('#french-hens').val();
         var bookid = $(this).data('bookid');
         addBookToCart(bookid, count);
     });

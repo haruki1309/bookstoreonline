@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Client;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-use App\User;
+use App\Models\User;
 
 class SigninController extends Controller
 {
@@ -15,7 +15,7 @@ class SigninController extends Controller
     	$user->email = $request->email;
     	$user->phone = $request->phone;
     	$user->password = bcrypt($request->password);
-
+        dd($request);
     	$user->save();
 
     	return redirect('/homepage');

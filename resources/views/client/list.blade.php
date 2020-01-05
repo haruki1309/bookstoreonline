@@ -5,11 +5,16 @@ Cửa hàng sách
 @stop
 
 @section('css')
+<link rel="stylesheet" type="text/css" href="{{url('vendor/boostrap-star-rating/star-rating.css')}}">
 @stop
 
 @section('js')
 <script type="text/javascript" src="{{url('js/client/bookreviewmodal.js')}}"></script>
 <script type="text/javascript" src="{{url('js/client/cart.js')}}"></script>
+<script type="text/javascript" src="{{url('vendor/boostrap-star-rating/star-rating.js')}}"></script>
+<script type="text/javascript">
+    $('.bookrating').rating({displayOnly: true, step: 0.5});
+</script>
 @stop
 
 @section('content')
@@ -107,39 +112,10 @@ Cửa hàng sách
             <div class="col-md-9 col-sm-9 col-xs-12">
                 <div class="shop-tab-area">
                     <div class="shop-tab-list">
-                        <div class="shop-tab-pill pull-left">
+                        <div class="shop-tab-pill pull-right">
                             <ul>
                                 <li class="active" id="left"><a data-toggle="pill" href="#home"><i class="fa fa-th"></i><span>Grid</span></a></li>
                                 <li><a data-toggle="pill" href="#menu1"><i class="fa fa-th-list"></i><span>List</span></a></li>
-                            </ul>
-                        </div>
-                        <div class="shop-tab-pill pull-right">
-                            <ul>
-                                <li class="product-size-deatils">
-                                    <div class="show-label">
-                                        <label>Show : </label>
-                                        <select>
-                                            <option value="10" selected="selected">10</option>
-                                            <option value="09">09</option>
-                                            <option value="08">08</option>
-                                            <option value="07">07</option>
-                                            <option value="06">06</option>
-                                        </select>
-                                    </div>
-                                </li>
-                                <li class="product-size-deatils">
-                                    <div class="show-label">
-                                        <label><i class="fa fa-sort-amount-asc"></i>Sort by : </label>
-                                        <select>
-                                            <option value="position" selected="selected">Position</option>
-                                            <option value="Name">Name</option>
-                                            <option value="Price">Price</option>
-                                        </select>
-                                    </div>
-                                </li>   
-                                <li class="shop-pagination"><a href="#">1</a></li>
-                                <li class="shop-pagination"><a href="#">2</a></li>
-                                <li class="shop-pagination"><a href="#"><i class="fa fa-caret-right"></i></a></li>
                             </ul>
                         </div>
                     </div>
@@ -150,36 +126,38 @@ Cửa hàng sách
                                 <div class="col-md-4 col-sm-6">
                                     <div class="single-banner">
                                         <div class="product-wrapper">
-                                            <a href="" class="single-banner-image-wrapper">
+                                            <a href="javascript:void(0)" class="single-banner-image-wrapper">
                                                 <img alt="" src="{{url('1234_db_img/'.$book->Picture[0]->link)}}">
-                                                <div class="price">@money($book->price)</div>
+                                                @if($book->sale > 0)
+                                                <div class="price">
+                                                    {{'-'.$book->sale.'%'}}
+                                                </div>
+                                                <div class="price-triangle"></div>
+                                                @endif
                                             </a>
                                             <div class="product-description" data-bookid="{{$book->id}}">
                                                 <div class="functional-buttons">
                                                     <a href="javascript:void(0)" class="btn-add-to-cart" data-bookid="{{$book->id}}" title="Add to Cart">
                                                         <i class="fa fa-shopping-cart"></i>
                                                     </a>
-                                                    <a href="javascript:void(0)" title="Add to Wishlist">
-                                                        <i class="fa fa-heart-o"></i>
-                                                    </a>
-                                                    <a href="javascript:void(0)" title="Quick view" class="viewProductModal">
+                                                    <a href="javascript:void(0)" title="Quick view" data-toggle="modal" data-target="#productModal" class="viewProductModal">
                                                         <i class="fa fa-compress"></i>
                                                     </a>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="banner-bottom text-center">
-                                            <div class="banner-bottom-title">
-                                                <a href="{{url('books/'.$book->id)}}">
-                                                    {{$book->title}}
-                                                </a>
-                                            </div>
                                             <div class="rating-icon">
-                                                <i class="fa fa-star icolor"></i>
-                                                <i class="fa fa-star icolor"></i>
-                                                <i class="fa fa-star icolor"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
+                                                <input class="rating-loading bookrating" value="{{$book->rating}}" data-size="xs">
+                                            </div>
+                                            <a href="{{url('books/'.$book->id)}}">{{$book->title}}</a>
+                                           <div class="row">
+                                                @if($book->sale == 0)
+                                                <div class="new-price">@money($book->price)</div>  
+                                                @else
+                                                <div class="new-price col-sm-6">@money($book->price * (100 - $book->sale)/100)</div>
+                                                <div class="old-price col-sm-6">@money($book->price)</div>  
+                                                @endif  
                                             </div>
                                         </div>
                                     </div>
@@ -206,8 +184,12 @@ Cửa hàng sách
                                                 </a>
                                             </h4>
                                             <div class="product-price">
+                                                @if($book->sale == 0)
                                                 <span class="new-price">@money($book->price)</span>
-                                                <span class="old-price">@money($book->price)</span>
+                                                @else
+                                                <span class="new-price">@money($book->price * (100 - $book->sale)/100)</span>
+                                                <span class="old-price">@money($book->price)</span> 
+                                                @endif
                                             </div>
                                             <div class="list-rating-icon">
                                                 <i class="fa fa-star icolor"></i>
@@ -217,10 +199,16 @@ Cửa hàng sách
                                                 <i class="fa fa-star"></i>
                                             </div>
                                             <p>{{$book->introduction}}</p>
+                                            @if($book->inventory_number > 0)
                                             <div class="availability">
                                                 <span>{{'Còn hàng'}}</span>
                                                 <button data-bookid="{{$book->id}}" class="btn-add-to-cart">Thêm vào giỏ hàng</button>
                                             </div>
+                                            @else
+                                            <div class="unavailable">
+                                                <span>{{'Tạm thời hết hàng'}}</span>
+                                            </div>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>

@@ -14,7 +14,7 @@ class CategoryController extends Controller
         $viewName = "thể loại";
         if(request()->ajax()) {
             $categories = Category::select('*');
-
+            
             return datatables()->of($categories)
             ->addColumn('action', function($categories){
                 $id = $categories->id;
@@ -23,6 +23,7 @@ class CategoryController extends Controller
             ->rawColumns(['action'])
             ->addIndexColumn()
             ->make(true);
+
         }
         return view('admin\bookinfo\bookinfo', compact('viewName'));
     }

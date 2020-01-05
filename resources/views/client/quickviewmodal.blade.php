@@ -16,6 +16,9 @@
                         <div class="price-box">
                             <p class="s-price">
                                 <span class="special-price">
+                                    <span class="amount" id="sale-price">@money($book->price * (100 - $book->sale)/100)</span>
+                                </span>
+                                <span class="old-price">
                                     <span class="amount" id="sale-price">@money($book->price)</span>
                                 </span>
                             </p>
