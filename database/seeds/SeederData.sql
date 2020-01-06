@@ -507,15 +507,20 @@ insert into menu
 values
 (1,'author','Tác giả'),
 (2,'translator','Dịch giả'),
-(3,'language','Ngôn ngữ'),
-(4,'age','Độ tuổi'),
-(5,'topic','Chủ đề'),
-(6,'category','Thể loại'),
-(7,'orders','Đơn hàng'),
-(8,'advertiserment','Quảng cáo'),
-(9,'comments','Bình luận'),
-(10,'admin','Nhân viên'),
-(11,'role','Phân quyền');
+(3,'publisher','Nhà xuất bản'),
+(4,'publishing-company','Nhà phát hành'),
+(5,'language','Ngôn ngữ'),
+(6,'age','Độ tuổi'),
+(7,'topic','Chủ đề'),
+(8,'category','Thể loại'),
+(9,'orders','Đơn hàng'),
+(10,'advertiserment','Quảng cáo'),
+(11,'comments','Bình luận'),
+(12,'admin','Nhân viên'),
+(13,'role','Phân quyền'),
+(14,'supplier','Nhà cung cấp'),
+(15,'goods-receipt-order','Phiếu đặt sách'),
+(16,'questions','Trả lời câu hỏi');
 
 insert into role
 values
@@ -526,7 +531,7 @@ values
 
 insert into menu_role
 values
-(11,1,1,1,1,1,1);
+(13,1,1,1,1,1,1);
 
 insert into address
 values

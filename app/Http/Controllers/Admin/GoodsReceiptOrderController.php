@@ -11,18 +11,42 @@ use DB;
 
 class GoodsReceiptOrderController extends Controller
 {
-    public function index(){
-    	return view('admin/bookorder/goods_receipt_order');
-    }
-
-    public function create_view(){
+    public function index(Request $re){
+        if($re->can_read==0){
+           //return redirect('admin/warehouse')->with('message', 'Bạn không có quyền xem'); 
+        }
         $suppliers = Supplier::all();
 
-    	return view('admin/bookorder/goods_receipt_order_create', compact('suppliers'));
+        $can_read = $re->can_read;
+        $can_edit = $re->can_edit;
+        $can_delete = $re->can_delete;
+
+    	return view('admin/bookorder/goods_receipt_order', compact('can_read','can_edit','can_delete'));
+    }
+
+    public function create_view(Request $re){
+        if($re->can_read==0){
+           //return redirect('admin/warehouse')->with('message', 'Bạn không có quyền xem'); 
+        }
+
+        $can_read = $re->can_read;
+        $can_edit = $re->can_edit;
+        $can_delete = $re->can_delete;
+
+        $suppliers = Supplier::all();
+
+    	return view('admin/bookorder/goods_receipt_order_create', compact('suppliers', 'can_read','can_edit','can_delete'));
     }
 
     public function create(Request $request){
-        dd($request->listbook->data-stuff);
+        $receptDate = $request->receiptdate;
+        $supplierID = $request->supplierid;
+        $orderBooksList = json_decode($request->orderBookList);
+
+         
+
+        $test = $orderBooksList[0]->title;
+        return Response::json($count);
     }
 
     public function mapTable(Request $request){
@@ -56,6 +80,7 @@ class GoodsReceiptOrderController extends Controller
                 ->select('book.*', 'book_supplier.order_price')
                 ->where(['book.id'=>$book_id, 'book_supplier.supplier_id'=>$supplier_id])
                 ->first();
+
 
             return Response::json(['id'=>$book->id, 'title'=>$book->title, 'unitPrice'=>$book->order_price]);
         }

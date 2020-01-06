@@ -1,0 +1,1 @@
+goodReceiptOrderRow.blade.php

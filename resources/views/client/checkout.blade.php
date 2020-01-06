@@ -105,7 +105,7 @@ Cửa hàng sách
                             </div>
                             <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
                                 <div class="panel-body">
-                                    @if($userAddress->count() > 1)
+                                    @if($userAddress->count() > 0)
                                     <div class="payment-met no-padding">
                                         @foreach($userAddress as $index => $item)
                                         <div class="input-group">
@@ -271,8 +271,8 @@ Cửa hàng sách
                         </table>
                     </div>
                     <div id="checkout-review-submit">
-                        <div class="cart-btn-3" id="review-buttons-container">
-                            <p class="left">Thiếu? <a href="{{url('checkout/cart')}}">Sửa giỏ hàng</a></p>
+                        <div class="cart-btn-3" style="margin-top: 20px;" id="review-buttons-container">
+                            <p class="left">Bạn cần thêm một số quyển sách? <a href="{{url('checkout/cart')}}">Quay lại giỏ hàng</a></p>
                             <button type="submit" form="order-form" class="btn btn-default"><span>Đặt hàng</span></button>
                         </div>
                     </div>

@@ -30,7 +30,7 @@ class PageController extends Controller
 
     public function shop(){
         $viewname = "Cửa hàng";
-        $books = Book::all();
+        $books = Book::all()->take(15);
         return view('client/list', compact('books', 'viewname'));
     }
 

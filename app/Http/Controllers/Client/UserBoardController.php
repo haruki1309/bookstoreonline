@@ -57,14 +57,14 @@ class UserBoardController extends Controller
 		        ]);
 
     			if(strcmp($request->newpassword, $request->confirmpassword) == 0){
-    				$user->password = encrypt($request->newPass);
+    				$user->password = encrypt($request->newpassword);
     			}
     			else{
-    				return redirect()->back()->with('error', 'Xác nhận mật khẩu không chính xác');
+    				return redirect()->back()->with('message', 'Xác nhận mật khẩu không chính xác');
     			}
     		}
     		else{
-    			return redirect()->back()->with('error', 'Sai mật khẩu');
+    			return redirect()->back()->with('message', 'Nhập sai mật khẩu cũ');
     		}
     	}
 

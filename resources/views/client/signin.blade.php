@@ -108,13 +108,13 @@ $(document).ready(function(){
                         TẠO TÀI KHOẢN
                     </h2>
                     <p class="form-row">
-                        <input name="name" type="text" placeholder="Họ và tên">
+                        <input name="name" type="text" placeholder="Họ và tên" value="{{old('name')}}">
                     </p>
                     <p class="form-row">
-                        <input name="email" type="email" placeholder="Email">
+                        <input name="email" type="email" placeholder="Email" value="{{old('email')}}">
                     </p>
                     <p class="form-row">
-                        <input name="phone" type="phone" placeholder="Số điện thoại">
+                        <input name="phone" type="phone" placeholder="Số điện thoại" value="{{old('phone')}}">
                     </p>
                     <p class="form-row">
                         <input name="password" type="password" placeholder="Mật khẩu">

@@ -12,19 +12,6 @@ use Cart;
 
 class LoginController extends Controller
 {
-    public function getSigninPage(){
-        return view('client/signin');    
-    }
-
-    public function postSignin(Request $request){
-        dd($request);
-        $user = new User;
-        $user->name = $request->name;
-        $user->phone = $request->phone;
-        $user->email = $request->email;
-        $user->name = $request->name;
-    }
-
     public function login(Request $request){
         if(Auth::attempt( ['email'=>$request->email, 'password'=>$request->password])){
             $user = Auth::user();

@@ -15,7 +15,8 @@ class CreateGoodsreceiptorderTable extends Migration
     {
         Schema::create('goodsreceiptorder', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->timestamps();
+            $table->integer('supplier_id');
+            $table->date('created_at');
         });
     }
 

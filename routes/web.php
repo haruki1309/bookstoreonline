@@ -12,12 +12,17 @@ use App\User;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Route::get('/', function(){
+	return redirect('homepage');
+});
+
 //page route
 Route::get('/homepage', 'Client\PageController@homepage');
 Route::get('/shop', 'Client\PageController@shop');
 Route::get('/checkout', 'Client\PageController@checkout');
 Route::get('/books/{id}', 'Client\PageController@detail');
-Route::get('/signin', 'Client\LoginController@getSigninPage');
+Route::get('/signin', 'Client\SigninController@getSigninPage');
 Route::post('/signin', 'Client\SigninController@postSignin');
 Route::post('/signin/check-email', 'Client\SigninController@checkEmailExisted');
 Route::post('/login', 'Client\LoginController@login');
@@ -55,6 +60,10 @@ Route::get('admin/login', 'Admin\AdminLoginController@getIndex');
 Route::post('admin/login', 'Admin\AdminLoginController@postIndex');
 
 Route::group(['prefix'=>'admin', 'middleware'=>'adminLogin'], function(){
+	Route::get('/', function(){
+		return redirect('admin\warehouse');
+	});
+
 	Route::get('logout', 'Admin\AdminLoginController@logout');
 	// Route::get('/', function(){
 	// 	Auth::guard('admin')->attempt(['username'=>'admin','password'=>'admin']);

@@ -73,23 +73,6 @@ Theo dõi đơn hàng
                 </div>
             </div>
             <div class="col-md-9 col-sm-9 col-xs-12">
-                <div id="noti-wrapper">
-                    @if(count($errors) > 0)
-                        <div class="errors">
-                            <ul>
-                                @foreach($errors->all() as $err)
-                                    <li>{{$err}}</li><br>
-                                @endforeach
-                            </ul>
-                        </div>
-                    @endif
-
-                    @if(session('message'))
-                        <div class="notifications">
-                            {{session('message')}}<br>
-                        </div>
-                    @endif
-                </div>
                 <form action="{{url('/account/information/update')}}" method="post">
                     <input type="hidden" name="_token" value="{{csrf_token()}}">
                     <div class="row">

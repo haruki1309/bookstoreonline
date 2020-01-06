@@ -9,16 +9,26 @@ use App\Models\User;
 
 class SigninController extends Controller
 {
+    public function getSigninPage(){
+        return view('client/signin');    
+    }
+    
     public function postSignin(Request $request){
     	$user = new User;
-    	$user->name = $request->name;
-    	$user->email = $request->email;
-    	$user->phone = $request->phone;
-    	$user->password = bcrypt($request->password);
-        dd($request);
-    	$user->save();
+        $user->name = $request->name;
+        $user->phone = $request->phone;
+        
+        if(strcmp($user->email, $request->email) == 0){
+            $user->email = $request->email;
+        }
+        else{
+            return redirect()->back()->with('message', 'Email đã đăng kí tài khoản');
+        }
 
-    	return redirect('/homepage');
+        $user->password = $request->password;
+
+        //$user->save();
+        return redirect('homepage')->with('message', 'Đăng kí thành công');
     }
 
     public function checkEmailExisted(Request $request){

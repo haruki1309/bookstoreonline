@@ -412,7 +412,7 @@
     </footer>
     <!-- Footer Area End -->
     
-
+    <!-- floating search -->
     <div class="search-container">
         <form action="{{url('search')}}" method="post" autocomplete="off">
             <input type="hidden" name="_token" value="{{csrf_token()}}">
@@ -420,6 +420,27 @@
             <div class="search"></div>
         </form>
     </div>
+
+    <!-- notify modal -->
+    <div class="modal fade" tabindex="-1" role="dialog" id="notify-modal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Thông báo</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- all js here -->
     
     <!-- jquery latest version -->
@@ -456,6 +477,31 @@
     <script src="{{url('js/client/home.js')}}" type="text/javascript"></script>
     <!-- main js -->
     <script src="{{url('js/client/main.js')}}"></script>
+    <script>
+        $( document ).ready(function() {
+            if('{{count($errors)}}' > 0){
+
+                var errors = <?php echo json_encode($errors->all()); ?>;
+                var htmlError = "";
+                errors.forEach(function(item){
+                    console.log(item);
+                    htmlError +=  "<li>"+item+"</li>";
+                });
+
+                htmlError = "<ul>"+htmlError+"</ul>";
+
+                $('#notify-modal').find('.modal-title').html('Lỗi');
+                $('#notify-modal').find('.modal-body').html(htmlError);
+                $('#notify-modal').modal('show');
+            }   
+
+            if('{{Session::has('message')}}'){
+                $('#notify-modal').find('.modal-title').html('Thông báo');
+                $('#notify-modal').find('.modal-body').html('{{Session::get('message')}}');
+                $('#notify-modal').modal('show');
+            }   
+        });
+    </script>
 
     @section('js')
     @show
