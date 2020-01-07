@@ -27,8 +27,11 @@ Nhà cung cấp
 
 @section('content')
 <div class="card shadow mb-4">
-    <div class="card-header py-3">
+    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
         <h6 class="m-0 font-weight-bold text-primary">Danh sách nhà cung cấp</h6>
+        <a href="{{url('admin/supplier/create')}}" class="btn btn-primary btn-circle btn-sm" id="create-new">
+            <i class="fas fa-plus"></i>
+        </a>
     </div>
     <div class="card-body">
         <div class="table-responsive">

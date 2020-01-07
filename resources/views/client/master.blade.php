@@ -136,7 +136,7 @@
                                         @endforeach
                                     </ul>
                                 </li>
-                                <li><a href="contact.html">Liên hệ</a></li>
+                                <li><a href="">Liên hệ</a></li>
                             </ul>
                         </nav>
                     </div>                        
@@ -241,7 +241,8 @@
                 </div>
             </div>
         </div>
-    </div>      
+    </div>    
+    <div style="margin-top: 90px;"></div>  
     <!-- Mobile Menu End -->   
     @section('content')
     @show

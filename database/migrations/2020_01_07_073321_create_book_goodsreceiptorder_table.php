@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateGoodsreceiptorderTable extends Migration
+class CreateBookGoodsreceiptorderTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,11 @@ class CreateGoodsreceiptorderTable extends Migration
      */
     public function up()
     {
-        Schema::create('goodsreceiptorder', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->integer('supplier_id');
-            $table->integer('total');
-            $table->date('created_at');
+        Schema::create('book_goods_receipt_order', function (Blueprint $table) {
+            $table->integer('book_id');
+            $table->integer('goods_receipt_order_id');
+            $table->integer('qty');
+            $table->integer('price');
         });
     }
 
@@ -28,6 +28,6 @@ class CreateGoodsreceiptorderTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('goodsreceiptorder');
+        Schema::dropIfExists('book_goods_receipt_order');
     }
 }

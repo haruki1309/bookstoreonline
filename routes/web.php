@@ -20,7 +20,7 @@ Route::get('/', function(){
 //page route
 Route::get('/homepage', 'Client\PageController@homepage');
 Route::get('/shop', 'Client\PageController@shop');
-Route::get('/checkout', 'Client\PageController@checkout');
+Route::get('/checkout', 'Client\PageController@checkout')->middleware('userLogin');
 Route::get('/books/{id}', 'Client\PageController@detail');
 Route::get('/signin', 'Client\SigninController@getSigninPage');
 Route::post('/signin', 'Client\SigninController@postSignin');
@@ -154,6 +154,9 @@ Route::group(['prefix'=>'admin', 'middleware'=>'adminLogin'], function(){
 
 	//supplier route
 	Route::get('supplier', 'Admin\SupplierController@index');
+	Route::get('supplier/create', 'Admin\SupplierController@createView');
+	Route::post('supplier/mapping-data', 'Admin\SupplierController@getBookAndMapTable');
+	Route::post('supplier/create', 'Admin\SupplierController@create');
 	Route::get('supplier/{id}', 'Admin\SupplierController@edit');
 
 	//goods receipt order
@@ -162,6 +165,7 @@ Route::group(['prefix'=>'admin', 'middleware'=>'adminLogin'], function(){
 	Route::post('goods-receipt-order/create-recept', 'Admin\GoodsReceiptOrderController@create');
 	Route::post('goods-receipt-order/create/map-table', 'Admin\GoodsReceiptOrderController@mapTable');
 	Route::post('goods-receipt-order/create/add-list', 'Admin\GoodsReceiptOrderController@addList');
+	Route::post('goods-receipt-order/view', 'Admin\GoodsReceiptOrderController@viewReceipt');
 
 	//admin router
 	Route::get('admin','Admin\AdminController@index');
@@ -173,7 +177,6 @@ Route::group(['prefix'=>'admin', 'middleware'=>'adminLogin'], function(){
 	Route::post('admin/delete/{id}','Admin\AdminController@postDelete');
 
 	//route router
-	
 	Route::get('role','Admin\RoleController@index');
 	Route::get('role/create','Admin\RoleController@getCreate');
 	Route::get('role/edit/{id}','Admin\RoleController@getEdit');

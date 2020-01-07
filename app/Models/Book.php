@@ -65,4 +65,8 @@ class Book extends Model
     public function Supplier(){
         return $this->belongsToMany('App\Models\Supplier')->withPivot('order_price');
     }
+
+    public function GoodsReceiptOrder(){
+        return $this->belongsToMany('App\Models\GoodsReceiptOrder')->withPivot('qty', 'price');
+    }
 }

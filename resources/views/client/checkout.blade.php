@@ -130,17 +130,17 @@ Cửa hàng sách
                                         <div id="ship-box-information" class="row"> 
                                             <div class="col-md-6">
                                                 <p class="form-row">
-                                                    <input name="receiverName" type="text" placeholder="Họ tên *">
+                                                    <input name="receiverName" type="text" placeholder="Họ tên *" disabled>
                                                 </p>
                                             </div>  
                                             <div class="col-md-6">
                                                 <p class="form-row">
-                                                    <input name="receiverPhone" type="text" placeholder="Số điện thoại *">
+                                                    <input name="receiverPhone" type="text" placeholder="Số điện thoại *" disabled>
                                                 </p>
                                             </div>  
                                             <div class="col-md-12">
                                                 <p class="form-row">
-                                                    <input name="receiverAddress" type="text" placeholder="Địa chỉ *">
+                                                    <input name="receiverAddress" type="text" placeholder="Địa chỉ *" disabled>
                                                 </p>
                                             </div>                                 
                                         </div>

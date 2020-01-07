@@ -4,10 +4,13 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Redirect, Response;
+
 use App\Models\Supplier;
 use App\Models\Book;
+use App\Models\GoodsReceiptOrder;
+
 use DB;
+use Redirect, Response;
 
 class GoodsReceiptOrderController extends Controller
 {
@@ -15,13 +18,13 @@ class GoodsReceiptOrderController extends Controller
         if($re->can_read==0){
            //return redirect('admin/warehouse')->with('message', 'Bạn không có quyền xem'); 
         }
-        $suppliers = Supplier::all();
+        $goodsReceiptOrder = GoodsReceiptOrder::all();
 
         $can_read = $re->can_read;
         $can_edit = $re->can_edit;
         $can_delete = $re->can_delete;
 
-    	return view('admin/bookorder/goods_receipt_order', compact('can_read','can_edit','can_delete'));
+    	return view('admin/bookorder/goods_receipt_order', compact('goodsReceiptOrder','can_read','can_edit','can_delete'));
     }
 
     public function create_view(Request $re){
@@ -40,13 +43,33 @@ class GoodsReceiptOrderController extends Controller
 
     public function create(Request $request){
         $receptDate = $request->receiptdate;
-        $supplierID = $request->supplierid;
+        $supplier = Supplier::find($request->supplierid);
         $orderBooksList = json_decode($request->orderBookList);
 
-         
+        $goodsReceiptOrder = new GoodsReceiptOrder;
+        $goodsReceiptOrder->supplier_id = $supplier->id;
+        $goodsReceiptOrder->created_at = date('Y-m-d');
+        $goodsReceiptOrder->total = 0;
+        $goodsReceiptOrder->save();
 
-        $test = $orderBooksList[0]->title;
-        return Response::json($count);
+        foreach($orderBooksList as $book){
+            $goodsReceiptOrder->total += $book->orderPrice;
+            //attach book id to pivot
+            $goodsReceiptOrder->Book()->attach($book->id, ['qty'=>$book->qty, 'price'=>$book->orderPrice]);
+            //update order price
+            DB::table('book_supplier')
+                ->where(['book_id'=>$book->id, 'supplier_id'=>$supplier->id])
+                ->update(['order_price'=>$book->orderPrice]);
+
+            // // //update book inventory
+            $currentBook = Book::find($book->id);
+            $currentBook->inventory_number += $book->qty;
+            $currentBook->save();
+        }
+
+        $goodsReceiptOrder->save();
+        //return redirect('admin/goods-receipt-order')->with('message', 'Thêm phiếu đặt hàng thành công!');
+        return Response::json(':');
     }
 
     public function mapTable(Request $request){
@@ -85,5 +108,13 @@ class GoodsReceiptOrderController extends Controller
             return Response::json(['id'=>$book->id, 'title'=>$book->title, 'unitPrice'=>$book->order_price]);
         }
         return view('admin/bookorder/goods_receipt_order_create');
+    }
+
+    public function viewReceipt(Request $request){
+
+        $receipt = GoodsReceiptOrder::find($request->goodsReceiptOrderID);
+        $modalView = (string)view('admin/bookorder/goodReceiptOrderQuickView', compact('receipt'));
+
+        return Response::json($modalView);
     }
 }

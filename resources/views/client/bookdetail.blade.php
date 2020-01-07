@@ -15,16 +15,25 @@
 <script type="text/javascript">
 $(document).ready(function(){
     
-    $('.open-comment').click(function(){
-        $('#commentModal').modal('show');
-    });
-
     $('#open-comment').click(function(){
-        $('#commentModal').modal('show');
+        var isUserLogin = '{{Auth::check()}}';
+        if(isUserLogin){
+            $('#commentModal').modal('show');
+        }
+        else{
+            $('#loginModal').modal('show');
+        }
+        
     });
 
     $('#open-question').click(function(){
-        $('#questionModal').modal('show');
+        var isUserLogin = '{{Auth::check()}}';
+        if(isUserLogin){
+            $('#questionModal').modal('show');
+        }
+        else{
+            $('#loginModal').modal('show');
+        }
     });
 
     if('{{Session::has('notify')}}'){

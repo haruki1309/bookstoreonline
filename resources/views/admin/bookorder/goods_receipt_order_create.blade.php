@@ -29,6 +29,10 @@ $(document).ready(function() {
         this.orderPrice  = _orderPrice;
     };
 
+    if(orderBookList.length == 0){
+        $('#btn-submit-receipt-form').attr('disabled', true);
+    }
+
     $('#dataTable').DataTable({
         columns: [
             {data: 'id', visible: false},
@@ -108,7 +112,8 @@ $(document).ready(function() {
             $('#order-tbl > tbody').append(row);
             var book = new Book(bookId, bookTitle, bookQty, bookOrderPrice);
             orderBookList.push(book);
-            console.log(orderBookList);
+            
+            $('#btn-submit-receipt-form').attr('disabled', false);
         }
         else{
             alert('"' + bookTitle + '" đã được thêm vào đơn đặt hàng');
@@ -123,7 +128,11 @@ $(document).ready(function() {
                 orderBookList.splice(i, 1); 
             }
         }
-        console.log(orderBookList);
+        
+        if(orderBookList.length == 0){
+            $('#btn-submit-receipt-form').attr('disabled', true);
+        }
+
         $(this).parent().parent().remove();
     });
 
@@ -147,10 +156,16 @@ $(document).ready(function() {
             method: "post",
             data: {receiptdate: receiptdate, supplierid: supplierid, orderBookList: sendOrderBooklist},
             dataType: "json",
-            success: function(data){ 
-                console.log("response: "+ data);
+            success: function(data){
+                $('#notify-modal').find('.modal-title').html('Thông báo');
+                $('#notify-modal').find('.modal-body').html('Thêm phiếu đặt sách thành công');
+                $('#notify-modal').modal('show');
             }
         });
+    });
+
+    $('#btn-notify-modal').click(function(){
+        window.location.href = $('meta[name="base-url"]').attr('content') + "/admin/goods-receipt-order";
     });
 });
 </script>
@@ -244,32 +259,32 @@ Tạo phiếu nhập hàng
 </div>
 
 <div id="bookInfoModal" class="modal fade" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" style="display: inline-block;">Thông tin sách</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form id="book-modal-form" method="post">
-                        <input type="hidden" name="formBookTitle">
-                        <input type="hidden" name="formBookId">
-                        <div class="form-group">
-                            <label for="qty" class="col-form-label">Số lượng</label>
-                            <input type="numberic" class="form-control" id="qty" name="formBookQty" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="orderPrice" class="col-form-label">Giá nhập</label>
-                            <input type="numberic" class="form-control" id="orderPrice" name="formBookOrderPrice" required>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button id="btn-add-to-book-order" class="btn btn-primary" data-dismiss="modal">Thêm vào phiếu nhập hàng</button>
-                </div>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" style="display: inline-block;">Thông tin sách</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="book-modal-form" method="post">
+                    <input type="hidden" name="formBookTitle">
+                    <input type="hidden" name="formBookId">
+                    <div class="form-group">
+                        <label for="qty" class="col-form-label">Số lượng</label>
+                        <input type="numberic" class="form-control" id="qty" name="formBookQty" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="orderPrice" class="col-form-label">Giá nhập</label>
+                        <input type="numberic" class="form-control" id="orderPrice" name="formBookOrderPrice" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button id="btn-add-to-book-order" class="btn btn-primary" data-dismiss="modal">Thêm vào phiếu nhập hàng</button>
             </div>
         </div>
     </div>
+</div>
 @stop

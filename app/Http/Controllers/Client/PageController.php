@@ -24,13 +24,15 @@ use App\Models\Advertiserment;
 class PageController extends Controller
 {
     public function homepage(){
+        $bestSellerBooks = Book::all()->take(3);
         $books = Book::all();
-        return view('client/homepage', compact('books'));
+        $salingBooks = Book::where('sale', '>', 0)->get();
+        return view('client/homepage', compact('books', 'salingBooks', 'bestSellerBooks'));
     }
 
     public function shop(){
         $viewname = "Cửa hàng";
-        $books = Book::all()->take(15);
+        $books = Book::paginate(15)->all();
         return view('client/list', compact('books', 'viewname'));
     }
 

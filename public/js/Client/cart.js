@@ -19,8 +19,13 @@ $(document).ready(function(){
             dataType: 'json',
             success:function(data)
             {
-                $('.nav-cart-count').html(data.cartCount);
-                $('.add-to-cart-product').html(data.cartView);
+                if(data == 'notLogin'){
+                    $('#loginModal').modal('show');
+                }
+                else{
+                    $('.nav-cart-count').html(data.cartCount);
+                    $('.add-to-cart-product').html(data.cartView);
+                }
             }
         });
     };

@@ -8,37 +8,45 @@ use Illuminate\Support\Facades\Auth;
 use Redirect,Response;
 
 use App\Models\Book;
+use App\Models\User;
 use Cart;
 
 class CartController extends Controller
 {
     public function addtocart(Request $request){
-        $id = $request->book_id;
-        $book = Book::find($id);
-        $cartCount = 0;
-        $data = [];
+        if(!Auth::check()){
+            if($request->ajax()){
+                return response()->json('notLogin');
+            }
+        }
+        else{
+            $id = $request->book_id;
+            $book = Book::find($id);
+            $cartCount = 0;
+            $data = [];
 
-        if($request->qty <= $book->inventory_number){
-            $user = Auth::user();
-            $price = $book->price * (1 - $book->sale/100); //sale-off
-            Cart::restore($user->id);
-            Cart::add([
-                'id'=>$book->id, 
-                'name'=>$book->title, 
-                'qty'=>$request->qty, 
-                'price'=>$price, 
-                'weight'=>1,
-                'options'=>[
-                    'oldprice'=>$book->price,
-                    'sale'=>$book->sale,
-                    'img'=>$book->Picture[0]->link,
-                    'author'=>$book->Author[0]->name
-                ]]);
-            Cart::store($user->id);
-            $cartCount = Cart::count();
-            $cartContent = Cart::content();
-            $cartview = (string)view('client/smallcartelement', compact('cartContent'))->render();
-            $data = ['cartCount'=>$cartCount, 'cartView'=>$cartview]; 
+            if($request->qty <= $book->inventory_number){
+                $user = Auth::user();
+                $price = $book->price * (1 - $book->sale/100); //sale-off
+                Cart::restore($user->id);
+                Cart::add([
+                    'id'=>$book->id, 
+                    'name'=>$book->title, 
+                    'qty'=>$request->qty, 
+                    'price'=>$price, 
+                    'weight'=>1,
+                    'options'=>[
+                        'oldprice'=>$book->price,
+                        'sale'=>$book->sale,
+                        'img'=>$book->Picture[0]->link,
+                        'author'=>$book->Author[0]->name
+                    ]]);
+                Cart::store($user->id);
+                $cartCount = Cart::count();
+                $cartContent = Cart::content();
+                $cartview = (string)view('client/smallcartelement', compact('cartContent'))->render();
+                $data = ['cartCount'=>$cartCount, 'cartView'=>$cartview]; 
+            }
         }
 
         return response()->json($data);

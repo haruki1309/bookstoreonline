@@ -68,6 +68,16 @@
                         <th>Giá nhập</th>
                     </tr>
                 </thead>
+                <tbody>
+                    @foreach($supplier->Book as $index => $book)
+                    <tr>
+                        <td>{{$index + 1}}</td>
+                        <td>{{$book->title}}</td>
+                        <td>{{$book->price}}</td>
+                        <td>{{$book->pivot->order_price}}</td>
+                    </tr>
+                    @endforeach
+                </tbody>
             </table>
         </div>
     </div>
