@@ -16,7 +16,7 @@ class RoleController extends Controller{
 	public static function getPermission($menuid,$userid){
 
 		$role = Admin::find($userid)->role_id;
-		$query = 'SELECT * FROM menu_role where menu_role.menu_id = ? and menu_role.role_id = ?';
+		$query = 'SELECT * FROM menu_role where menu_role.menu_id = ? and menu_role.role_id = ? ORDER BY menu_id ';
 		$result = DB::select($query, [$menuid,$userid]);
 		return $result;
 	}

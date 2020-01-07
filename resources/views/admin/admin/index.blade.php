@@ -46,9 +46,12 @@ Danh sách
 <div class="card shadow mb-4">
     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
         <h6 class="m-0 font-weight-bold text-primary">Danh sách người dùng</h6>
-        <a class="btn btn-primary btn-circle btn-sm" id="create-new"  data-toggle="modal" data-target="#exampleModal" data-whatever=""  data-whatever2="" data-whatever3="" data-whatever4="create" >
+        @if($can_create)
+         <a class="btn btn-primary btn-circle btn-sm" id="create-new"  data-toggle="modal" data-target="#exampleModal" data-whatever=""  data-whatever2="" data-whatever3="" data-whatever4="create" >
             <i class="fas fa-plus"></i>
         </a> 
+        @endif
+       
     </div>
     <div class="card-body">
         <div class="table-responsive">
@@ -70,7 +73,7 @@ Danh sách
                         <td>
                           {{--   <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Open modal for @mdo</button> --}}
                           @if($can_edit==1)
-                                <a class="delete btn btn-danger btn-circle ml-1 btn-sm"  data-toggle="modal" data-target="#exampleModal" data-whatever="{{$user->id}}"  data-whatever2="{{$user->username}}" data-whatever3="{{$user->role_id}}" data-whatever4="edit"  >
+                                <a class="edit btn btn-success btn-circle btn-sm edit-row"  data-toggle="modal" data-target="#exampleModal" data-whatever="{{$user->id}}"  data-whatever2="{{$user->username}}" data-whatever3="{{$user->role_id}}" data-whatever4="edit"  >
                                 <i class="fas fa-edit"></i>
                             </a>  
                           @endif

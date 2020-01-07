@@ -24,9 +24,11 @@
 <div class="card shadow mb-4">
     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
         <h6 class="m-0 font-weight-bold text-primary">{{'Danh sách '.$viewName}}</h6>
-        <a href="javascript:void(0)" class="btn btn-primary btn-circle btn-sm" id="create-new">
-    		<i class="fas fa-plus"></i>
-    	</a> 
+        @if($can_create)
+	        <a href="javascript:void(0)" class="btn btn-primary btn-circle btn-sm" id="create-new">
+	    		<i class="fas fa-plus"></i>
+	    	</a> 
+    	@endif
     </div>
     <div class="card-body">
         <div class="table-responsive"> 

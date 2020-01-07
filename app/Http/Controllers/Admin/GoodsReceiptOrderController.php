@@ -13,15 +13,15 @@ class GoodsReceiptOrderController extends Controller
 {
     public function index(Request $re){
         if($re->can_read==0){
-           //return redirect('admin/warehouse')->with('message', 'Bạn không có quyền xem'); 
+           return redirect('admin/warehouse')->with('message', 'Bạn không có quyền xem'); 
         }
         $suppliers = Supplier::all();
 
         $can_read = $re->can_read;
         $can_edit = $re->can_edit;
         $can_delete = $re->can_delete;
-
-    	return view('admin/bookorder/goods_receipt_order', compact('can_read','can_edit','can_delete'));
+        $can_create = $re->can_create;
+    	return view('admin/bookorder/goods_receipt_order', compact('can_read','can_edit','can_delete','can_create'));
     }
 
     public function create_view(Request $re){

@@ -28,9 +28,11 @@ Phiếu nhập hàng
 <div class="card shadow mb-4">
     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
         <h6 class="m-0 font-weight-bold text-primary">Danh sách phiếu nhập hàng</h6>
-        <a href="{{url('admin/goods-receipt-order/create')}}" class="btn btn-primary btn-circle btn-sm" id="create-new">
+        @if($can_create==1)
+                <a href="{{url('admin/goods-receipt-order/create')}}" class="btn btn-primary btn-circle btn-sm" id="create-new">
             <i class="fas fa-plus"></i>
         </a>
+        @endif
     </div>
     <div class="card-body">
         <div class="table-responsive">
