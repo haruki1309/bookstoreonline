@@ -16,12 +16,13 @@ class AdminController extends Controller{
 	public function index(Request $request){
 		$can_edit = $request->can_edit;
         $can_delete = $request->can_delete;
+        $can_create = $request->can_create;
 		if($request->can_read==0){
            return redirect('admin/warehouse')->with('message', 'Bạn không có quyền xem'); 
         }
 		$all = Admin::all();
 		$roles = Role::all();
-		return view('admin\admin\index', compact('all','roles','can_edit','can_delete'));
+		return view('admin\admin\index', compact('all','roles','can_edit','can_delete','can_create'));
 	}
 
 	public function getEdit(Request $request,$id){

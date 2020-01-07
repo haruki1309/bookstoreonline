@@ -522,14 +522,14 @@ values
 (6,'age','Độ tuổi'),
 (7,'topic','Chủ đề'),
 (8,'category','Thể loại'),
-(9,'orders','Đơn hàng'),
-(10,'advertiserment','Quảng cáo'),
-(11,'comments','Bình luận'),
-(12,'admin','Nhân viên'),
-(13,'role','Phân quyền'),
-(14,'supplier','Nhà cung cấp'),
-(15,'goods-receipt-order','Phiếu đặt sách'),
-(16,'questions','Trả lời câu hỏi');
+(9,'supplier','Nhà cung cấp'),
+(10,'goods-receipt-order','Phiếu đặt sách'),
+(11,'orders','Đơn hàng'),
+(12,'advertiserment','Quảng cáo'),
+(13,'comments','Bình luận'),
+(14,'questions','Trả lời câu hỏi'),
+(15,'admin','Nhân viên'),
+(16,'role','Phân quyền');
 
 insert into role
 values

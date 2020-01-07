@@ -13,10 +13,11 @@ class AdvController extends Controller
     	$all = Advertiserment::orderBy('endDate', 'desc')->get();
         $can_read = $re->can_read;
         $can_edit = $re->can_edit;
-        $can_delete =$re->delete;
+        $can_delete =$re->can_delete;
+        $can_create =$re->can_create;
         $viewname = 'quảng cáo';
 
-    	return view('admin\ads\index', compact('all','can_read','can_edit','can_delete'));
+    	return view('admin\ads\index', compact('all','can_read','can_edit','can_delete','can_create'));
     }
     public function getCreate(){
     	return view('admin\adv\adv_create');

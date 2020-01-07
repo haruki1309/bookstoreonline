@@ -12,8 +12,9 @@ class TranslatorController extends Controller
 {
    public function index(Request $request){
         $viewName = "dịch giả";
-         $can_edit = $request->can_edit;
+        $can_edit = $request->can_edit;
         $can_delete = $request->can_delete;
+        $can_create =$request->can_create;
           if($request->can_read==0){
            return redirect('admin/warehouse')->with('message', 'Bạn không có quyền xem'); 
         }
@@ -29,7 +30,7 @@ class TranslatorController extends Controller
             ->addIndexColumn()
             ->make(true);
         }
-        return view('admin\bookinfo\bookinfo', compact('viewName','can_edit','can_delete'));
+        return view('admin\bookinfo\bookinfo', compact('viewName','can_edit','can_delete','can_create'));
     }
       
     public function edit($id)

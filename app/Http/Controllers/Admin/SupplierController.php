@@ -22,8 +22,8 @@ class SupplierController extends Controller
         $can_read = $re->can_read;
         $can_edit = $re->can_edit;
         $can_delete = $re->can_delete;
-
-        return view('admin\bookorder\supplier', compact('suppliers', 'can_read','can_edit','can_delete'));
+        $can_create = $re->can_create;
+        return view('admin\bookorder\supplier', compact('suppliers', 'can_read','can_edit','can_delete','can_create'));
     }
 
     public function createView(Request $re){

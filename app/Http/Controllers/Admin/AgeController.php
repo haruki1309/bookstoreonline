@@ -13,6 +13,7 @@ class AgeController extends Controller
     public function index(Request $re){
           $can_edit = $re->can_edit;
         $can_delete = $re->can_delete;
+        $can_create = $re->can_create;
         if($re->can_read==0){
            return redirect('admin/warehouse')->with('message', 'Bạn không có quyền xem'); 
         }
@@ -29,7 +30,7 @@ class AgeController extends Controller
             ->addIndexColumn()
             ->make(true);
         }
-        return view('admin\bookinfo\bookinfo', compact('viewName','can_edit','can_delete'));
+        return view('admin\bookinfo\bookinfo', compact('viewName','can_edit','can_delete','can_create'));
     }
       
     public function edit($id)
