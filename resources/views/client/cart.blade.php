@@ -37,9 +37,9 @@ Cửa hàng sách
             <div class="col-md-8">
                 <div class="shopingcart-bottom-area">
                     <a class="left-shoping-cart" href="{{url('/shop')}}">Tiếp tục mua</a>
-                    <div class="shopingcart-bottom-area pull-right">
+                    <!-- <div class="shopingcart-bottom-area pull-right">
                         <a class="right-shoping-cart" href="#">Clear</a>
-                    </div>
+                    </div> -->
                 </div> 
                 <div class="wishlist-table-area table-responsive">
                     <table>

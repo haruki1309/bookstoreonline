@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Client;
-
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -18,17 +18,22 @@ class SigninController extends Controller
         $user->name = $request->name;
         $user->phone = $request->phone;
         
-        if(strcmp($user->email, $request->email) == 0){
-            $user->email = $request->email;
-        }
-        else{
-            return redirect()->back()->with('message', 'Email đã đăng kí tài khoản');
-        }
+        // if(strcmp($user->email, $request->email) == 0){
+        //     $user->email = $request->email;
+        // }
+        // else{
+        //     return redirect()->back()->with('message', 'Email đã đăng kí tài khoản');
+        // }
 
-        $user->password = $request->password;
+        $user->email = $request->email;
+        $user->password = bcrypt($request->password);
+        $user->save();
 
-        //$user->save();
-        return redirect('homepage')->with('message', 'Đăng kí thành công');
+        if(Auth::attempt( ['email'=>$request->email, 'password'=>$request->password])){
+            $user = Auth::user();
+            return redirect('homepage')->with('user', $user);
+        }
+        return redirect()->back()->with('message', 'Lỗi không xác định, vui lòng thử lại');
     }
 
     public function checkEmailExisted(Request $request){

@@ -82,7 +82,7 @@ Danh sách đơn đặt hàng
                 	@foreach($all as $order)
                     <tr>
                         <td>{{$order->id}}</td>
-                        <td>{{$users->find($order->user_id)->username}}</td>
+                        <td>{{$users->find($order->user_id)->name}}</td>
                         <td>{{$order->receiver_name}}</td>
                         <td>{{$order->delivery_address}}</td>
                         <td>{{$order->phone_number}}</td>

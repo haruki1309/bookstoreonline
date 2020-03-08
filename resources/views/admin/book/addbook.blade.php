@@ -37,7 +37,7 @@ Thêm sách
         <h6 class="m-0 font-weight-bold text-primary">Form thông tin sách</h6> 
     </div>
     <div class="card-body">
-        <form method="post" id="book-info-form">
+        <form method="post" id="book-info-form" enctype="multipart/form-data">
             <input type="hidden" name="_token" value="{{csrf_token()}}">
             <div class="row">
                 <div class="col-md-12 form-group">
@@ -153,7 +153,7 @@ Thêm sách
                 <div class="col-md-4">
                     <label for="intro">Hình ảnh</label>
                     <div class="custom-file">
-                        <input type="file" class="custom-file-input" name="image[]" multiple="">
+                        <input type="file" class="custom-file-input" name="image[]" multiple>
                         <label class="custom-file-label">Chọn ảnh...</label>
                     </div>
                 </div>

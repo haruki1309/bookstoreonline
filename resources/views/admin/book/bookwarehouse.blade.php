@@ -29,9 +29,11 @@ Kho sách
 <div class="card shadow mb-4">
     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
         <h6 class="m-0 font-weight-bold text-primary">Dữ liệu đầu sách</h6>
+        @if($can_create==1)
         <a href="{{url('admin/books/new')}}" class="btn btn-primary btn-circle btn-sm" id="create-new">
             <i class="fas fa-plus"></i>
-        </a> 
+        </a>
+        @endif
     </div>
     <div class="card-body">
         <div class="table-responsive">
@@ -42,7 +44,10 @@ Kho sách
                         <th>Tác giả</th>
                         <th>Số lượng</th>
                         <th>Giá bìa</th>
+                     @if($can_edit==1)
                         <th></th>
+                     @endif
+
                     </tr>
                 </thead>
                 <tbody>
@@ -52,11 +57,16 @@ Kho sách
                         <td>{{$book->Author[0]->name}}</td>
                         <td>{{$book->inventory_number}}</td>
                         <td>@money($book->price)</td>
+                     @if($can_edit==1)
                         <td>
-                        	<a href="{{url('admin/books/'.$book->id.'/edit')}}" class="btn btn-circle btn-sm bg-primary text-gray-100">
-                        		<i class="far fa-edit"></i>
-                        	</a>
-                        </td>
+                            <a href="{{url('admin/books/'.$book->id.'/edit')}}" class="btn btn-circle btn-sm bg-primary text-gray-100">
+                               <i class="far fa-edit"></i>
+                            </a>
+                            </td>
+                     @endif
+                       
+                       
+
                     </tr>
                     @endforeach
                 </tbody>

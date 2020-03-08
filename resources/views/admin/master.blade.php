@@ -33,7 +33,7 @@
             <hr class="sidebar-divider my-0">
             <!-- Nav Item - Dashboard -->
             <li class="nav-item">
-                <a class="nav-link" href="">
+                <a class="nav-link" href="{{url('admin/dashboard')}}">
                 <i class="fas fa-fw fa-tachometer-alt"></i>
                 <span>Dashboard</span>
                 </a>
@@ -244,6 +244,7 @@
     <script src="{{url('vendor/bootstrap/js/bootstrap.min.js')}}"></script>
     <!-- Core plugin JavaScript-->
     <script src="{{url('vendor/jquery-easing/jquery.easing.min.js')}}"></script>
+    <script src="{{url('vendor/chart.js/Chart.min.js')}}"></script>
     <!-- Custom scripts for all pages-->
     <script src="{{url('js/admin/sb-admin-2.min.js')}}"></script>  
 

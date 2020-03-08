@@ -7,7 +7,9 @@ use App\Http\Controllers\Controller;
 
 class DashboardController extends Controller
 {
-    public function getIndex(){
-    	return view('admin\dashboard\dashboard');
+    public function getIndex(Request $re){
+        $can_edit = $re->can_edit;
+        $can_delete = $re->can_delete;
+    	return view('admin\dashboard', compact('can_edit', 'can_delete'));
     }
 }

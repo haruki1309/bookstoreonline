@@ -48,9 +48,13 @@ Sửa sách
         <form method="post" id="book-info-form">
             <input type="hidden" name="_token" value="{{csrf_token()}}">
             <div class="row">
-                <div class="col-md-12 form-group">
+                <div class="col-md-8 form-group">
                     <label for="name">Tên sách</label>
                     <input type="text" name="title" id="name" class="form-control form-control-sm" value="{{$book->title}}">
+                </div>
+                <div class="col-md-4 form-group">
+                    <label for="sale">Giảm giá</label>
+                    <input type="text" name="sale" id="sale" class="form-control form-control-sm" value="{{$book->sale}}">
                 </div>
             </div>
             <div class="row">
@@ -161,7 +165,7 @@ Sửa sách
                 <div class="col-md-4">
                     <label for="intro">Hình ảnh</label>
                     <div class="custom-file">
-                        <input type="file" class="custom-file-input" name="image[]" multiple="">
+                        <input type="file" class="custom-file-input" name="image[]">
                         <label class="custom-file-label">Chọn ảnh...</label>
                     </div>
                 </div>

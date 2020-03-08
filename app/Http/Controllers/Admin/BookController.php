@@ -3,6 +3,8 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Str;
+
 use App\Models\Book;
 use App\Models\Author;
 use App\Models\Translator;
@@ -16,19 +18,19 @@ use App\Models\Picture;
 
 class BookController extends Controller
 {
-     public function login(){
-        Auth::guard('admin')->attempt(['username'=>$request->username,'password'=>$request->password]);
-        return redirect('admin/book/warehouse');
-
-     }
+     // public function login(){
+     //    Auth::guard('admin')->attempt(['username'=>$request->username,'password'=>$request->password]);
+     //    return redirect('admin/book/warehouse');
+     // }
 
     public function getIndex(Request $request){
         Auth::guard('admin')->attempt(['username'=>'admin','password'=>'admin']);
         $can_edit = $request->can_edit;
         $can_delete = $request->can_delete;
+        $can_create = $request->can_create;
     	$books = Book::all();
 
-    	return view('admin/book/bookwarehouse', compact('books','can_edit','can_delete'));
+    	return view('admin/book/bookwarehouse', compact('books','can_edit','can_delete','can_create'));
     }
 
     public function getAddBook(Request $request){
@@ -130,18 +132,19 @@ class BookController extends Controller
         $book->Topic()->attach($request->topic);
         $book->Category()->attach($request->category);
 
-        if($request->hasFile('image')){
-            for($i = 0; $i < count($request->image); $i++){
-                $file = $request->file('image');
-                $imageName = $file[$i]->getClientOriginalName();
+        if($request->hasFile('image')){ 
+            $files = $request->file('image');
 
-                $savedName = str_random(4)."_".$imageName;
+            foreach($files as $file){
+                $imageName = $file->getClientOriginalName();
+
+                $savedName = Str::random(4)."_".$imageName;
 
                 while(file_exists('1234_db_img/'.$savedName)){
-                    $savedName = str_random(4)."_".$imageName;
+                    $savedName = Str::random(4)."_".$imageName;
                 }
 
-                $file[$i]->move('1234_db_img', $savedName);
+                $file->move('1234_db_img', $savedName);
 
                 $image = new Picture;
                
@@ -149,10 +152,10 @@ class BookController extends Controller
                 $image->link = $savedName;
 
                 $image->save();
-            }
+            }   
         }
 
-        return redirect()->back()->with('message', 'Thêm sách thành công');
+        return redirect()->back()->with('message', "Thêm sách thành công");
     }
 
     public function getEditBook(Request $request, $id){
@@ -188,6 +191,7 @@ class BookController extends Controller
     public function postEditBook(Request $request, $id){
         $this->validate($request, [
             'title'=>'required | max:100',
+            'sale'=>'required|numeric|min:0|max:100',
             'publishingCompany'=>'required',
             'publisher'=>'required',
             'language'=>'required',
@@ -205,6 +209,11 @@ class BookController extends Controller
         ], [
             'title.required'=>'Bạn chưa nhập tên sách',
             'title.max'=>'Tên sách không được dài hơn 100 kí tự',
+
+            'sale.required'=>'Bạn chưa nhập mức giảm giá',
+            'sale.numeric'=>'Mức giảm giá cần là chữ số',
+            'sale.min'=>'Mức giảm giá cần lớn hơn hoặc bằng 0',
+            'sale.max'=>'Mức giảm giá cần nhỏ hơn hoặc bằng 100',
 
             'publishingCompany.required'=>'Bạn chưa nhập tên Nhà Xuất Bản',
             'publisher.required'=>'Bạn chưa nhập tên Nhà Phát Hành',
@@ -255,6 +264,7 @@ class BookController extends Controller
         $book->number_of_pages = $request->pages;
         $book->inventory_number = $request->inventory;
         $book->price = $request->price;
+        $book->sale = $request->sale;
         $book->save();
 
         $book->Author()->detach();
@@ -277,17 +287,18 @@ class BookController extends Controller
                 $book->Picture[$i]->delete();   
             }
             //2. add lai
-            for($i = 0; $i < count($request->image); $i++){
-                $file = $request->file('image');
-                $imageName = $file[$i]->getClientOriginalName();
+            $files = $request->file('image');
 
-                $savedName = str_random(4)."_".$imageName;
+            foreach($files as $file){
+                $imageName = $file->getClientOriginalName();
+
+                $savedName = Str::random(4)."_".$imageName;
 
                 while(file_exists('1234_db_img/'.$savedName)){
-                    $savedName = str_random(4)."_".$imageName;
+                    $savedName = Str::random(4)."_".$imageName;
                 }
 
-                $file[$i]->move('1234_db_img', $savedName);
+                $file->move('1234_db_img', $savedName);
 
                 $image = new Picture;
                
@@ -295,7 +306,7 @@ class BookController extends Controller
                 $image->link = $savedName;
 
                 $image->save();
-            }
+            }   
         }
 
         return redirect()->back()->with('message', 'Sửa sách thành công');

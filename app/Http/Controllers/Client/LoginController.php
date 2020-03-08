@@ -20,7 +20,7 @@ class LoginController extends Controller
             return redirect()->back()->with('user', $user);
         }
         else{
-            return redirect()->back();
+            return redirect()->back()->with('message', 'Lỗi không xác định, vui lòng thử lại');
         }
     }
 

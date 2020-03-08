@@ -65,10 +65,7 @@ Route::group(['prefix'=>'admin', 'middleware'=>'adminLogin'], function(){
 	});
 
 	Route::get('logout', 'Admin\AdminLoginController@logout');
-	// Route::get('/', function(){
-	// 	Auth::guard('admin')->attempt(['username'=>'admin','password'=>'admin']);
-	// 	return redirect('admin\warehouse');
-	// });
+
 	//book route ------------------------------------------------------
 	Route::get('warehouse', 'Admin\BookController@getIndex');
 	Route::get('books/new', 'Admin\BookController@getAddBook');

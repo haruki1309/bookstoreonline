@@ -529,7 +529,8 @@ values
 (13,'comments','Bình luận'),
 (14,'questions','Trả lời câu hỏi'),
 (15,'admin','Nhân viên'),
-(16,'role','Phân quyền');
+(16,'role','Phân quyền'),
+(17,'warehouse','Kho sách');
 
 insert into role
 values
@@ -555,7 +556,8 @@ values
 (13,1,1,1,1,1,1),
 (14,1,1,1,1,1,1),
 (15,1,1,1,1,1,1),
-(16,1,1,1,1,1,1);
+(16,1,1,1,1,1,1),
+(17,1,1,1,1,1,1);
 
 insert into address
 values

@@ -20,13 +20,16 @@ class OrderController extends Controller
         $can_create = $re->can_create;
         $can_approve = $re->can_approve;
         $can_delete = $re->can_delete;
+
         $all = Order::all();
-        $users = Admin::all();
+        $users = User::all();
+        $admin = Admin::all();
         $methoddeliver = MethodDelivery::all();
         $methodpayment = MethodPayment::all();
         $status = Status::all();
+
         $viewname = 'order';
-    	return view('admin/orders/index', compact('all','can_edit','can_create','can_delete','users','methoddeliver','methodpayment','status'));
+    	return view('admin/orders/index', compact('all','can_edit','can_create','can_delete','admin','users','methoddeliver','methodpayment','status'));
     }
 
    public function edit(Request $re){
